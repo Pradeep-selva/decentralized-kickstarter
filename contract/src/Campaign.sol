@@ -30,7 +30,7 @@ contract Campaign {
             );
     }
     
-    function contribute() public payable validContributor {
+    function contribute() public payable newContributor {
         approvers[msg.sender] = true;
         approversCount++;
     }
@@ -49,14 +49,38 @@ contract Campaign {
         req.complete = false;
     }
     
-    modifier validContributor() {
+    function approveRequest(uint256 index) public isContributor {
+        Types.Request storage req = requests[index];
+        
+        require(!req.approvals[msg.sender]);
+        
+        req.approvals[msg.sender] = true;
+        req.approvalCount++;
+    }
+    
+    function finalizeRequest(uint256 index) public owner {
+        Types.Request storage req = requests[index];
+        
+        require(req.approvalCount >= approversCount/2);
+        require(!req.complete);
+        
+        req.recipient.transfer(req.value);
+        req.complete = true;
+    }
+    
+    modifier owner() {
+        require(msg.sender == manager);
+        _;
+    }
+    
+    modifier newContributor() {
         require(msg.value >= minContribution);
         require(!approvers[msg.sender]);
         _;
     }
     
-    modifier owner() {
-        require(msg.sender == manager);
+    modifier isContributor() {
+        require(approvers[msg.sender]);
         _;
     }
 }
