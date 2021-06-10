@@ -12,12 +12,12 @@ contract Campaign {
     mapping(address => bool) approvers;
     uint256 approversCount;
     
-    constructor(uint256 minimum, string memory desc) {
+    constructor(uint256 minimum, string memory desc, address sender) {
         minContribution = minimum;
         description = desc;
         approversCount = 0;
         numRequests = 0;
-        manager = msg.sender;
+        manager = sender;
     }
     
     function getSummary() public view returns (uint256, uint256, uint256, uint256, string memory) {
@@ -27,7 +27,7 @@ contract Campaign {
             approversCount,
             address(this).balance,
             description
-            );
+        );
     }
     
     function contribute() public payable newContributor {
