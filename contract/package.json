@@ -6,7 +6,8 @@
   "author": "pradeep-selva",
   "license": "MIT",
   "scripts": {
-    "compile": "rm -rf dist && npx tsc && cp -r ./src ./dist && node dist/compile.js"
+    "compile": "rm -rf dist && npx tsc && cp -r ./src ./dist && node dist/compile.js",
+    "test": "rm -rf dist && npx tsc && mocha dist/test/index.test.js"
   },
   "dependencies": {
     "@truffle/hdwallet-provider": "^1.4.0",

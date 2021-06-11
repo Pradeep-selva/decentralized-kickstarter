@@ -1,6 +1,6 @@
 import path = require("path");
-import solc from "solc";
 import fs = require("fs-extra");
+import solc from "solc";
 
 const buildPath = path.resolve("./", "build");
 const contractFiles = ["Campaign.sol", "Factory.sol", "Types.sol"];
