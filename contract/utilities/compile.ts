@@ -2,13 +2,13 @@ import path = require("path");
 import fs = require("fs-extra");
 import solc from "solc";
 
-const buildPath = path.resolve("./", "build");
+const buildPath = path.resolve(__dirname, "../", "../", "build");
 const contractFiles = ["Campaign.sol", "Factory.sol", "Types.sol"];
 
 fs.removeSync(buildPath);
 
 const contractConfig = contractFiles.map((contract) => {
-  const _path = path.resolve(__dirname, "src", contract);
+  const _path = path.resolve(__dirname, "../", "src", contract);
 
   return {
     fileName: contract,

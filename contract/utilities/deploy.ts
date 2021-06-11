@@ -1,7 +1,7 @@
 import HDWalletProvider from "@truffle/hdwallet-provider";
 import Web3 from "web3";
-import secrets from "./secrets";
-import GetAttrs from "./instances";
+import secrets from "../secrets";
+import GetAttrs from "../instances";
 
 const provider = new HDWalletProvider(secrets.mnemonic, secrets.infuraEndpoint);
 const { eth } = new Web3(provider);
