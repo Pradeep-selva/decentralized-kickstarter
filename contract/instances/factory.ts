@@ -1,2 +1,8 @@
-import Factory from "../build/Factory.json";
-import Web3 from "web3";
+import GetAttrs, { web3 } from ".";
+import secrets from "../secrets";
+
+const { abi } = GetAttrs("Factory");
+
+const instance = new web3.eth.Contract(abi, secrets.deployedAddress);
+
+export default instance;

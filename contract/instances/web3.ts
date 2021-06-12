@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import secrets from "../secrets";
 
-let web3: Web3 | undefined;
+let web3: Web3;
 
 const Window = window as Window &
   typeof globalThis & { ethereum: any; web3: Web3 };
