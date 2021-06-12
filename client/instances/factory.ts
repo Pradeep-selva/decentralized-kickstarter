@@ -1,12 +1,10 @@
 import web3 from "./web3";
 import secrets from "../../contract/secrets";
+import Factory from "../contract_build/Factory.json";
 
-const fs = require("fs-extra");
-const path = require("path");
-
-const _path = path.resolve("./", "contract_build", "Factory.json");
-const { abi } = fs.readJSONSync(_path);
-
-const instance = new web3.eth.Contract(abi, secrets.deployedAddress);
+const instance = new web3.eth.Contract(
+  Factory.abi as any,
+  secrets.deployedAddress
+);
 
 export default instance;
