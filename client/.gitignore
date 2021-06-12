@@ -14,6 +14,8 @@
 
 # production
 /build
+/contract_build
+secrets.ts
 
 # misc
 .DS_Store

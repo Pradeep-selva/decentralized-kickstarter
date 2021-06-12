@@ -2,10 +2,13 @@ import path = require("path");
 import fs = require("fs-extra");
 import solc from "solc";
 
-const buildPath = path.resolve(__dirname, "../", "../", "build");
+const buildPaths = [
+  path.resolve(__dirname, "../", "../", "build"),
+  path.resolve(__dirname, "../", "../", "../", "client", "contract_build")
+];
 const contractFiles = ["Campaign.sol", "Factory.sol", "Types.sol"];
 
-fs.removeSync(buildPath);
+buildPaths.forEach((buildPath) => fs.removeSync(buildPath));
 
 const contractConfig = contractFiles.map((contract) => {
   const _path = path.resolve(__dirname, "../", "src", contract);
@@ -36,12 +39,15 @@ contractConfig.forEach(({ fileName, content }) => {
 
 const output = JSON.parse(solc.compile(JSON.stringify(input)));
 
-fs.ensureDirSync(buildPath);
+buildPaths.forEach((buildPath) => fs.ensureDirSync(buildPath));
 
 Object.keys(output?.contracts).forEach((contractName) => {
   const contract = contractName.split(".")[0];
-  fs.outputJSONSync(
-    path.resolve(buildPath, `${contract}.json`),
-    output.contracts?.[contractName][contract]
+
+  buildPaths.forEach((buildPath) =>
+    fs.outputJSONSync(
+      path.resolve(buildPath, `${contract}.json`),
+      output.contracts?.[contractName][contract]
+    )
   );
 });
