@@ -13,3 +13,5 @@ export default (type: "Campaign" | "Factory") => {
 
   return { abi, ByteCode };
 };
+
+export { default as web3 } from "./web3";
