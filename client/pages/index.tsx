@@ -1,11 +1,13 @@
 import React from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import { Card, Container } from "semantic-ui-react";
 import { Factory } from "../instances";
 import { Campaign } from "../types";
+import { CampaignCard } from "../components";
 
 interface IProps {
-  campaigns: Array<string>;
+  campaigns: Array<Campaign>;
   error: string;
 }
 
@@ -28,7 +30,7 @@ class Home extends React.Component<IProps, any> {
   }
 
   render() {
-    console.log(this.props);
+    const { error, campaigns } = this.props;
 
     return (
       <div className={styles.container}>
@@ -39,6 +41,20 @@ class Home extends React.Component<IProps, any> {
 
         <main className={styles.main}>
           <h1 className={styles.title}>Decentralized Kickstarter</h1>
+          {!error && !!campaigns.length && (
+            <Container>
+              <Card.Group>
+                {campaigns.map(({ address, title, description }, index) => (
+                  <CampaignCard
+                    address={address}
+                    title={title}
+                    description={description}
+                    key={index}
+                  />
+                ))}
+              </Card.Group>
+            </Container>
+          )}
         </main>
       </div>
     );
