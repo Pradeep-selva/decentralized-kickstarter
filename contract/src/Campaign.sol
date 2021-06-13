@@ -7,25 +7,35 @@ contract Campaign {
     address manager;
     uint256 minContribution;
     string description;
+    string title;
     mapping(uint256 => Types.Request) requests;
     uint256 numRequests;
     mapping(address => bool) approvers;
     uint256 approversCount;
     
-    constructor(uint256 minimum, string memory desc, address sender) {
+    constructor(uint256 minimum, string memory _title, string memory desc, address sender) {
         minContribution = minimum;
+        title = _title;
         description = desc;
         approversCount = 0;
         numRequests = 0;
         manager = sender;
     }
     
-    function getSummary() public view returns (uint256, uint256, uint256, uint256, string memory) {
+    function getSummary() public view returns (
+        uint256, 
+        uint256, 
+        uint256, 
+        uint256, 
+        string memory, 
+        string memory
+    ) {
         return (
             minContribution,
             numRequests,
             approversCount,
             address(this).balance,
+            title,
             description
         );
     }
