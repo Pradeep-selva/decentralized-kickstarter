@@ -2,6 +2,10 @@
   margin-bottom: 5vh !important;
 }
 
+.siteTitle {
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 768px) {
   .menuAdd {
     visibility: hidden;

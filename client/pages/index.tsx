@@ -1,10 +1,12 @@
 import React from "react";
 import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { Button, Card, Icon, Grid } from "semantic-ui-react";
 import { Factory } from "../instances";
 import { Campaign } from "../types";
 import { CampaignCard, Layout } from "../components";
+import routes from "../routes";
 
 interface IProps {
   campaigns: Array<Campaign>;
@@ -35,7 +37,7 @@ class Home extends React.Component<IProps, any> {
     return (
       <div>
         <Head>
-          <title>Decentralized kickstarter</title>
+          <title>Decentralized Kickstarter</title>
           <meta name='description' content='Decentralized Kickstarter' />
         </Head>
 
@@ -47,7 +49,7 @@ class Home extends React.Component<IProps, any> {
                   <div style={{ marginBottom: "4vh" }}>
                     <h2>Want to get your dreams funded?</h2>
                     <Button size={"huge"} color={"blue"}>
-                      Create Campaign
+                      <Link href={routes.newCampaign}>Create Campaign</Link>
                     </Button>
                   </div>
                 </Grid.Column>
