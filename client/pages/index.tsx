@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 import { Card, Container } from "semantic-ui-react";
 import { Factory } from "../instances";
 import { Campaign } from "../types";
-import { CampaignCard } from "../components";
+import { CampaignCard, Layout } from "../components";
 
 interface IProps {
   campaigns: Array<Campaign>;
@@ -33,28 +33,29 @@ class Home extends React.Component<IProps, any> {
     const { error, campaigns } = this.props;
 
     return (
-      <div className={styles.container}>
+      <div>
         <Head>
           <title>Decentralized kickstarter</title>
           <meta name='description' content='Decentralized Kickstarter' />
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}>Decentralized Kickstarter</h1>
-          {!error && !!campaigns.length && (
-            <Container>
-              <Card.Group>
-                {campaigns.map(({ address, title, description }, index) => (
-                  <CampaignCard
-                    address={address}
-                    title={title}
-                    description={description}
-                    key={index}
-                  />
-                ))}
-              </Card.Group>
-            </Container>
-          )}
+          <Layout>
+            {!error && !!campaigns.length && (
+              <Container>
+                <Card.Group>
+                  {campaigns.map(({ address, title, description }, index) => (
+                    <CampaignCard
+                      address={address}
+                      title={title}
+                      description={description}
+                      key={index}
+                    />
+                  ))}
+                </Card.Group>
+              </Container>
+            )}
+          </Layout>
         </main>
       </div>
     );
