@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { Factory } from "../instances";
+import { Campaign } from "../types";
 
 interface IProps {
   campaigns: Array<string>;
@@ -11,7 +12,15 @@ interface IProps {
 class Home extends React.Component<IProps, any> {
   static async getInitialProps() {
     try {
-      const campaigns = await Factory.methods?.getCampaigns()?.call();
+      const payload = await Factory.methods?.getCampaigns()?.call();
+      const campaigns: Array<Campaign> = Array.from({
+        length: payload[0].length
+      }).map((_, index) => ({
+        address: payload[0][index],
+        title: payload[1][index],
+        description: payload[2][index]
+      }));
+
       return { campaigns };
     } catch (error) {
       return { error };
@@ -29,9 +38,7 @@ class Home extends React.Component<IProps, any> {
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}>
-            Decentralized Kickstarter - {this.props.campaigns[0]}
-          </h1>
+          <h1 className={styles.title}>Decentralized Kickstarter</h1>
         </main>
       </div>
     );
