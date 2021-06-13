@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
         <Menu.Item>
           <h1>Decentralized Kickstarter</h1>
         </Menu.Item>
-        <Menu.Item position={"right"}>
+        <Menu.Item position={"right"} className={styles.menuAdd}>
           <Button icon color={"green"} labelPosition={"right"}>
             New Campaign
             <Icon name={"plus"} />

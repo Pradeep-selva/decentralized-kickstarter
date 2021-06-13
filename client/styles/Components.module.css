@@ -1,3 +1,9 @@
 .menu {
-  margin-bottom: 2vh;
+  margin-bottom: 5vh !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .menuAdd {
+    visibility: hidden;
+  }
 }
