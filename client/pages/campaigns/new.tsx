@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Container, Form, Button, Confirm } from "semantic-ui-react";
+import {
+  Container,
+  Form,
+  Button,
+  Confirm,
+  Input,
+  TextArea
+} from "semantic-ui-react";
 import { Layout, StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
@@ -13,6 +20,7 @@ type IState = {
   showConfirm: boolean;
   showStatus: boolean;
   values: CampaignPayload;
+  failMessage: string;
 };
 
 const defaultValues: CampaignPayload = {
@@ -30,6 +38,7 @@ class NewCampaign extends Component<any, IState> {
       showConfirm: false,
       showStatus: false,
       errors: null,
+      failMessage: "",
       values: {
         ...defaultValues
       }
@@ -58,8 +67,10 @@ class NewCampaign extends Component<any, IState> {
       const { description, minContribution, title } = payload;
       this.setState({ showStatus: true });
 
+      let accounts;
+
       try {
-        const accounts = await web3.eth.getAccounts();
+        accounts = await web3.eth.getAccounts();
 
         await Factory.methods
           .createCampaign(minContribution, title, description)
@@ -67,15 +78,21 @@ class NewCampaign extends Component<any, IState> {
 
         this.setState({
           values: { ...defaultValues },
-          errors: null
+          errors: null,
+          failMessage: ""
         });
       } catch (err) {
-        console.log(err);
+        this.setState({
+          failMessage: !!accounts.length
+            ? err.message
+            : "Transaction failed! Make sure you have metamask installed to make a transaction.",
+          errors: null
+        });
       } finally {
         this.toggleLoading();
         setTimeout(() => {
           this.setState({ showStatus: false });
-        }, 5000);
+        }, 8000);
       }
     }
   };
@@ -85,7 +102,8 @@ class NewCampaign extends Component<any, IState> {
   closeDialog = () => this.setState(() => ({ showConfirm: false }));
 
   render() {
-    const { values, errors, showConfirm, loading, showStatus } = this.state;
+    const { values, errors, showConfirm, loading, showStatus, failMessage } =
+      this.state;
 
     return (
       <main className={homeStyles.main}>
@@ -96,20 +114,20 @@ class NewCampaign extends Component<any, IState> {
                 status={
                   loading
                     ? "waiting"
-                    : !!errors || !!values.title.length
+                    : !!failMessage.length
                     ? "error"
                     : "success"
                 }
-                error={
-                  "An error occurred while creating campaign. Do you have metamask installed?"
-                }
+                error={failMessage}
                 success={"Your campaign was successfully created!"}
               />
             )}
             <Form onSubmit={() => this.setState({ showConfirm: true })}>
               <Form.Field>
-                <label>Minimum Contribution (wei)</label>
-                <input
+                <label>Minimum Contribution</label>
+                <Input
+                  label={"wei"}
+                  labelPosition={"right"}
                   value={values.minContribution}
                   type={"number"}
                   name={"minContribution"}
@@ -119,7 +137,7 @@ class NewCampaign extends Component<any, IState> {
               </Form.Field>
               <Form.Field>
                 <label>Title</label>
-                <input
+                <Input
                   value={values.title}
                   name={"title"}
                   onChange={this.handleChange}
@@ -128,7 +146,7 @@ class NewCampaign extends Component<any, IState> {
               </Form.Field>
               <Form.Field>
                 <label>Description</label>
-                <textarea
+                <TextArea
                   value={values.description}
                   name={"description"}
                   maxLength={1000}
@@ -138,6 +156,7 @@ class NewCampaign extends Component<any, IState> {
                 <p className={styles.error}>{errors?.description}</p>
               </Form.Field>
               <Button
+                loading={loading}
                 disabled={loading}
                 size={"huge"}
                 color={"blue"}
