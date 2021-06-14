@@ -4,7 +4,8 @@ import { CampaignErrors, CampaignPayload } from "../types/validators";
 export default ({
   description,
   minContribution,
-  title
+  title,
+  image
 }: CampaignPayload): [ProcessedCampaign | null, CampaignErrors | null] => {
   let errors = {};
   const contribution = parseInt(minContribution);
@@ -12,6 +13,7 @@ export default ({
   const payload = {
     description,
     title,
+    image,
     minContribution: contribution
   };
 
@@ -21,6 +23,13 @@ export default ({
 
   if (!contribution)
     errors["minContribution"] = "Minimum contribution must be > 1 wei";
+
+  if (
+    !!image.length &&
+    (!["http", "https"].some((item) => image.startsWith(item)) ||
+      !["png", "jpg", "jpeg", "gif"].some((item) => image.endsWith(item)))
+  )
+    errors["image"] = "This is not a valid image URL";
 
   if (!!Object.keys(errors).length) return [null, errors];
   else return [payload, null];

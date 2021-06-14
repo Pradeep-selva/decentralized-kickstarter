@@ -26,7 +26,8 @@ type IState = {
 const defaultValues: CampaignPayload = {
   description: "",
   minContribution: "0",
-  title: ""
+  title: "",
+  image: ""
 };
 
 class NewCampaign extends Component<any, IState> {
@@ -64,7 +65,7 @@ class NewCampaign extends Component<any, IState> {
     if (!!errors) this.setState({ errors });
     else {
       this.toggleLoading();
-      const { description, minContribution, title } = payload;
+      const { description, minContribution, title, image } = payload;
       this.setState({ showStatus: true });
 
       let accounts;
@@ -73,7 +74,7 @@ class NewCampaign extends Component<any, IState> {
         accounts = await web3.eth.getAccounts();
 
         await Factory.methods
-          .createCampaign(minContribution, title, description)
+          .createCampaign(minContribution, title, description, image)
           ?.send({ from: accounts[0] });
 
         this.setState({
@@ -154,6 +155,15 @@ class NewCampaign extends Component<any, IState> {
                   onChange={this.handleChange}
                 />
                 <p className={styles.error}>{errors?.description}</p>
+              </Form.Field>
+              <Form.Field>
+                <label>Image Link</label>
+                <Input
+                  value={values.image}
+                  name={"image"}
+                  onChange={this.handleChange}
+                />
+                <p className={styles.error}>{errors?.image}</p>
               </Form.Field>
               <Button
                 loading={loading}

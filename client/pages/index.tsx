@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-import { Button, Card, Icon, Grid } from "semantic-ui-react";
+import { Button, Card, Grid } from "semantic-ui-react";
 import { Factory } from "../instances";
 import { Campaign } from "../types";
 import { CampaignCard, Layout } from "../components";
@@ -22,7 +22,8 @@ class Home extends React.Component<IProps, any> {
       }).map((_, index) => ({
         address: payload[0][index],
         title: payload[1][index],
-        description: payload[2][index]
+        description: payload[2][index],
+        image: payload[3][index]
       }));
 
       return { campaigns };
@@ -57,11 +58,12 @@ class Home extends React.Component<IProps, any> {
                   {!error && !!campaigns.length && (
                     <Card.Group>
                       {campaigns.map(
-                        ({ address, title, description }, index) => (
+                        ({ address, title, description, image }, index) => (
                           <CampaignCard
                             address={address}
                             title={title}
                             description={description}
+                            image={image}
                             key={index}
                           />
                         )

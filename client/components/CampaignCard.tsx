@@ -1,11 +1,14 @@
 import React from "react";
-import { Card, Button } from "semantic-ui-react";
+import { Card, Button, Image } from "semantic-ui-react";
 import { Campaign } from "../types";
 
-const CampaignCard = ({ address, description, title }: Campaign) => {
+const CampaignCard = ({ address, description, title, image }: Campaign) => {
   return (
     <Card fluid>
       <Card.Content>
+        {image?.length ? (
+          <Image floated={"right"} size={"small"} src={image} />
+        ) : null}
         <Card.Header>
           <h2>{title}</h2>
         </Card.Header>
