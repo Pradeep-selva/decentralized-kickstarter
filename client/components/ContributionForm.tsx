@@ -17,6 +17,7 @@ type IState = {
 interface IProps {
   minContribution: string;
   address: string;
+  callback: Function;
 }
 
 class ContributionForm extends Component<IProps, IState> {
@@ -55,6 +56,8 @@ class ContributionForm extends Component<IProps, IState> {
           from: accounts[0],
           value: payload
         });
+
+        this.props.callback(payload);
 
         this.setState({
           contribution: "",

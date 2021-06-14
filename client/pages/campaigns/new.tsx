@@ -118,7 +118,7 @@ class NewCampaign extends Component<IProps, IState> {
     return (
       <main className={homeStyles.main}>
         <Layout>
-          <Container className={styles.centerContainer}>
+          <Container>
             <h1 className={styles.heading}>
               <Icon name={"ticket"} /> Create Campaign
             </h1>

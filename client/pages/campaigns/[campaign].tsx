@@ -11,9 +11,19 @@ interface IProps {
   address: string;
 }
 
-class ViewCampaign extends Component<IProps, {}> {
-  constructor(props) {
+interface IState {
+  summary: CampaignSummary;
+  address: string;
+}
+
+class ViewCampaign extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
+
+    this.state = {
+      summary: props.summary,
+      address: props.address
+    };
   }
 
   static async getInitialProps(context) {
@@ -39,7 +49,7 @@ class ViewCampaign extends Component<IProps, {}> {
     const {
       summary: { balance, contributors, manager, minContribution, numRequests },
       address
-    } = this.props;
+    } = this.state;
 
     const details = [
       this.returnCardObject(
@@ -84,11 +94,24 @@ class ViewCampaign extends Component<IProps, {}> {
     style: { overflowWrap: "break-word" }
   });
 
+  refreshCallBack = (contribution: number) =>
+    this.setState({
+      summary: {
+        ...this.state.summary,
+        contributors: (
+          parseInt(this.props.summary.contributors) + 1
+        ).toString(),
+        balance: (
+          parseInt(this.props.summary.balance) + contribution
+        ).toString()
+      }
+    });
+
   render() {
     const {
       summary: { title, description, image, minContribution },
       address
-    } = this.props;
+    } = this.state;
 
     return (
       <main className={homeStyles.main}>
@@ -109,6 +132,7 @@ class ViewCampaign extends Component<IProps, {}> {
                   <ContributionForm
                     minContribution={minContribution}
                     address={address}
+                    callback={this.refreshCallBack}
                   />
                 </Grid.Column>
               </Grid.Row>
