@@ -124,6 +124,7 @@ class NewCampaign extends Component<IProps, IState> {
             </h1>
             {showStatus && (
               <StatusIndicator
+                icon
                 status={
                   loading
                     ? "waiting"

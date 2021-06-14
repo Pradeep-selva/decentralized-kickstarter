@@ -6,26 +6,27 @@ interface IProps {
   status: Status;
   success: string;
   error: string;
+  icon?: boolean;
 }
 
-const StatusIndicator = ({ status, error, success }: IProps) => {
-  let icon, title, body, color;
+const StatusIndicator = ({ status, error, success, icon = false }: IProps) => {
+  let iconName, title, body, color;
 
   switch (status) {
     case "waiting":
-      icon = "circle notched";
+      iconName = "circle notched";
       title = "Please wait";
       body = "Your transaction is being processed...";
       color = "yellow";
       break;
     case "success":
-      icon = "check square";
+      iconName = "check square";
       title = "Success";
       body = success;
       color = "green";
       break;
     case "error":
-      icon = "exclamation";
+      iconName = "exclamation";
       title = "Error";
       body = error;
       color = "red";
@@ -34,7 +35,7 @@ const StatusIndicator = ({ status, error, success }: IProps) => {
 
   return (
     <Message icon className={color}>
-      <Icon name={icon} loading={status === "waiting"} />
+      {icon && <Icon name={iconName} loading={status === "waiting"} />}
       <Message.Content>
         <Message.Header>{title}</Message.Header>
         {body}

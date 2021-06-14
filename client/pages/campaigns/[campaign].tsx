@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Image, Card, Grid } from "semantic-ui-react";
-import { Layout, StatusIndicator } from "../../components";
+import { ContributionForm, Layout, StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { Campaign, web3 } from "../../instances";
@@ -105,9 +105,7 @@ class ViewCampaign extends Component<IProps, {}> {
                   {!!image && <Image src={image} />}
                 </Grid.Column>
                 <Grid.Column computer={"3"} mobile={"12"}>
-                  <h2 style={{ textAlign: "center" }}>
-                    Want to become a contributor?
-                  </h2>
+                  <ContributionForm />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
