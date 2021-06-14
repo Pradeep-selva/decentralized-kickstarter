@@ -1,6 +1,8 @@
 import React from "react";
+import Link from "next/link";
 import { Card, Button, Image } from "semantic-ui-react";
 import { Campaign } from "../types";
+import RouteNames from "../routes";
 
 const CampaignCard = ({ address, description, title, image }: Campaign) => {
   return (
@@ -23,7 +25,12 @@ const CampaignCard = ({ address, description, title, image }: Campaign) => {
       </Card.Content>
       <Card.Content extra>
         <Button basic color='green'>
-          View Details
+          <Link
+            href={RouteNames.campaignById.absolute}
+            as={RouteNames.campaignById.as(address)}
+          >
+            View Details
+          </Link>
         </Button>
       </Card.Content>
     </Card>

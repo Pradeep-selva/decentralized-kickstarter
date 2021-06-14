@@ -6,7 +6,7 @@ import { Button, Card, Grid } from "semantic-ui-react";
 import { Factory } from "../instances";
 import { Campaign } from "../types";
 import { CampaignCard, Layout } from "../components";
-import routes from "../routes";
+import RouteNames from "../routes";
 
 interface IProps {
   campaigns: Array<Campaign>;
@@ -50,7 +50,7 @@ class Home extends React.Component<IProps, any> {
                   <div style={{ marginBottom: "4vh" }}>
                     <h2>Want to get your dreams funded?</h2>
                     <Button size={"huge"} color={"blue"}>
-                      <Link href={routes.newCampaign}>Create Campaign</Link>
+                      <Link href={RouteNames.newCampaign}>Create Campaign</Link>
                     </Button>
                   </div>
                 </Grid.Column>
