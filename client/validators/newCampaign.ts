@@ -1,6 +1,11 @@
-import { CampaignPayload } from "../types/validators";
+import { ProcessedCampaign } from "../types";
+import { CampaignErrors, CampaignPayload } from "../types/validators";
 
-export default ({ description, minContribution, title }: CampaignPayload) => {
+export default ({
+  description,
+  minContribution,
+  title
+}: CampaignPayload): [ProcessedCampaign | null, CampaignErrors | null] => {
   let errors = {};
   const contribution = parseInt(minContribution);
 

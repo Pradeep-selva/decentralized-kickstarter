@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import { Container, Form, Button } from "semantic-ui-react";
+import { Container, Form, Button, Confirm, Message } from "semantic-ui-react";
 import { Layout } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { useValidateNewCampaign } from "../../validators";
 import { CampaignErrors, CampaignPayload } from "../../types/validators";
+import { Factory, web3 } from "../../instances";
 
 type IState = {
   message: string;
   errors: CampaignErrors;
   loading: boolean;
+  showConfirm: boolean;
   values: CampaignPayload;
 };
 
@@ -20,6 +22,7 @@ class NewCampaign extends Component<any, IState> {
     this.state = {
       message: "",
       loading: false,
+      showConfirm: false,
       errors: {},
       values: {
         description: "",
@@ -41,28 +44,42 @@ class NewCampaign extends Component<any, IState> {
       }
     }));
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { values } = this.state;
     const [payload, errors] = useValidateNewCampaign(values);
 
-    if (!!Object.keys(errors).length) this.setState({ errors });
+    if (!!errors) this.setState({ errors });
     else {
       this.toggleLoading();
       this.setState({ message: "Waiting for transaction confirmation..." });
-      console.log(payload);
+
+      const { description, minContribution, title } = payload;
+
+      try {
+        const accounts = await web3.eth.getAccounts();
+        console.log(accounts);
+        await Factory.methods
+          .createCampaign(minContribution, title, description)
+          ?.send({ from: accounts[0] });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.setState({ message: "" });
+        this.toggleLoading();
+      }
     }
   };
 
   toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
 
   render() {
-    const { values, errors } = this.state;
+    const { values, errors, showConfirm, loading } = this.state;
 
     return (
       <main className={homeStyles.main}>
         <Layout>
           <Container className={styles.centerContainer}>
-            <Form onSubmit={this.handleSubmit}>
+            <Form onSubmit={() => this.setState({ showConfirm: true })}>
               <Form.Field>
                 <label>Minimum Contribution (wei)</label>
                 <input
@@ -93,12 +110,22 @@ class NewCampaign extends Component<any, IState> {
                 />
                 <p className={styles.error}>{errors.description}</p>
               </Form.Field>
-              <Button size={"huge"} color={"blue"} type={"submit"}>
+              <Button
+                disabled={loading}
+                size={"huge"}
+                color={"blue"}
+                type={"submit"}
+              >
                 Create
               </Button>
             </Form>
           </Container>
         </Layout>
+        <Confirm
+          open={showConfirm}
+          onCancel={() => this.setState({ showConfirm: false })}
+          onConfirm={this.handleSubmit}
+        />
       </main>
     );
   }
