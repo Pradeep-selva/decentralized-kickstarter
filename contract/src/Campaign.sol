@@ -9,10 +9,10 @@ contract Campaign {
     string description;
     string title;
     string image;
-    mapping(uint256 => Types.Request) requests;
+    mapping(uint256 => Types.Request) public requests;
     uint256 numRequests;
     mapping(address => bool) approvers;
-    uint256 approversCount;
+    uint256 public approversCount;
     
     constructor(
         uint256 minimum, 
@@ -46,6 +46,11 @@ contract Campaign {
             manager
         );
     }
+
+    function getRequestCount() public view returns (uint256) {
+        return numRequests;
+    }
+
     
     function contribute() public payable newContributor {
         approvers[msg.sender] = true;
