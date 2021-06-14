@@ -3,6 +3,7 @@ import { Container, Form, Button } from "semantic-ui-react";
 import { Layout } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
+import { useValidateNewCampaign } from "../../validators";
 
 type IState = {
   minContribution: string;
@@ -30,12 +31,23 @@ class NewCampaign extends Component<any, IState> {
       [event.target.name]: event.target.value
     });
 
+  handleSubmit = () => {
+    const { description, minContribution, title } = this.state;
+    const [payload, errors] = useValidateNewCampaign({
+      description,
+      minContribution,
+      title
+    });
+
+    console.log(payload, errors);
+  };
+
   render() {
     return (
       <main className={homeStyles.main}>
         <Layout>
           <Container className={styles.centerContainer}>
-            <Form>
+            <Form onSubmit={this.handleSubmit}>
               <Form.Field>
                 <label>Minimum Contribution (wei)</label>
                 <input
