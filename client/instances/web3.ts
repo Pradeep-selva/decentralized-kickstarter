@@ -4,7 +4,6 @@ import secrets from "../secrets";
 let web3: Web3;
 
 const initServerProvider = () => {
-  console.log("server");
   const provider = new Web3.providers.HttpProvider(secrets.infuraEndpoint);
   web3 = new Web3(provider);
 };

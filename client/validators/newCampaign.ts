@@ -24,10 +24,15 @@ export default ({
   if (!contribution)
     errors["minContribution"] = "Minimum contribution must be > 1 wei";
 
+  const imageWithoutQuery = image.slice(0, image.indexOf("?"));
+  console.log(imageWithoutQuery);
+
   if (
     !!image.length &&
     (!["http", "https"].some((item) => image.startsWith(item)) ||
-      !["png", "jpg", "jpeg", "gif"].some((item) => image.endsWith(item)))
+      !["png", "jpg", "jpeg", "gif"].some((item) =>
+        imageWithoutQuery.includes(item)
+      ))
   )
     errors["image"] = "This is not a valid image URL";
 

@@ -8,3 +8,9 @@
   font-size: 1rem;
   color: #eb0c0c;
 }
+
+.heading {
+  text-align: center;
+  margin-bottom: 4vh;
+  font-size: 3rem;
+}

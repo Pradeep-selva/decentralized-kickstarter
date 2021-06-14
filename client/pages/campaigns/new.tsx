@@ -5,14 +5,17 @@ import {
   Button,
   Confirm,
   Input,
-  TextArea
+  TextArea,
+  Icon
 } from "semantic-ui-react";
+import { NextRouter, withRouter } from "next/router";
 import { Layout, StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { useValidateNewCampaign } from "../../validators";
 import { CampaignErrors, CampaignPayload } from "../../types/validators";
 import { Factory, web3 } from "../../instances";
+import RouteNames from "../../routes";
 
 type IState = {
   errors: CampaignErrors | null;
@@ -30,7 +33,11 @@ const defaultValues: CampaignPayload = {
   image: ""
 };
 
-class NewCampaign extends Component<any, IState> {
+interface IProps {
+  router: NextRouter;
+}
+
+class NewCampaign extends Component<IProps, IState> {
   constructor(props) {
     super(props);
 
@@ -93,7 +100,9 @@ class NewCampaign extends Component<any, IState> {
         this.toggleLoading();
         setTimeout(() => {
           this.setState({ showStatus: false });
-        }, 8000);
+          !this.state.failMessage.length &&
+            this.props.router.push(RouteNames.home);
+        }, 5000);
       }
     }
   };
@@ -110,6 +119,9 @@ class NewCampaign extends Component<any, IState> {
       <main className={homeStyles.main}>
         <Layout>
           <Container className={styles.centerContainer}>
+            <h1 className={styles.heading}>
+              <Icon name={"ticket"} /> Create Campaign
+            </h1>
             {showStatus && (
               <StatusIndicator
                 status={
@@ -190,4 +202,4 @@ class NewCampaign extends Component<any, IState> {
   }
 }
 
-export default NewCampaign;
+export default withRouter(NewCampaign);
