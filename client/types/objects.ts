@@ -11,3 +11,14 @@ export interface ProcessedCampaign {
   minContribution: number;
   image: string;
 }
+
+export interface CampaignSummary {
+  minContribution: string;
+  numRequests: string;
+  contributors: string;
+  balance: string;
+  title: string;
+  description: string;
+  image: string;
+  manager: string;
+}
