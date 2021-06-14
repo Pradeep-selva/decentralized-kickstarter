@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Container, Image } from "semantic-ui-react";
+import { Container, Image, Card, Grid } from "semantic-ui-react";
 import { Layout, StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
-import { Campaign } from "../../instances";
+import { Campaign, web3 } from "../../instances";
 import { CampaignSummary } from "../../types";
 
 interface IProps {
@@ -35,6 +35,55 @@ class ViewCampaign extends Component<IProps, {}> {
     return { summary, address };
   }
 
+  renderCards = () => {
+    const {
+      summary: { balance, contributors, manager, minContribution, numRequests },
+      address
+    } = this.props;
+
+    const details = [
+      this.returnCardObject(
+        manager,
+        "Address of Manager",
+        "The manager maintains the campaign and can make monetary requests to contributors"
+      ),
+      this.returnCardObject(
+        address,
+        "Address of Contract",
+        "The campaign's contract can be found at this address (Rinkeby network)"
+      ),
+      this.returnCardObject(
+        minContribution,
+        "Minimum Contribution (wei)",
+        "The minimum contribution required to donate to become a contributor"
+      ),
+      this.returnCardObject(
+        web3.utils.fromWei(balance, "ether"),
+        "Campaign Balance (ether)",
+        "Current donation pool of the campaign, given my contributors"
+      ),
+      this.returnCardObject(
+        contributors,
+        "Number of contributors",
+        "The number of people that have contributed to the campaign. They make decisions on request approvals."
+      ),
+      this.returnCardObject(
+        numRequests,
+        "Number of Requests",
+        "The number of transaction requests created by the manager of this contract, to the contributors."
+      )
+    ];
+
+    return <Card.Group itemsPerRow={2} items={details} />;
+  };
+
+  returnCardObject = (header: string, meta: string, description: string) => ({
+    header,
+    meta,
+    description,
+    style: { overflowWrap: "break-word" }
+  });
+
   render() {
     const {
       summary: { title, description, image }
@@ -51,6 +100,8 @@ class ViewCampaign extends Component<IProps, {}> {
             </h1>
             <h3 className={styles.greyText}>{description}</h3>
             {!!image && <Image src={image} />}
+
+            <div style={{ marginTop: "4vh" }}>{this.renderCards()}</div>
           </Container>
         </Layout>
       </main>
