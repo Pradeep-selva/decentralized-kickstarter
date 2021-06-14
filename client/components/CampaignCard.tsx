@@ -11,7 +11,11 @@ const CampaignCard = ({ address, description, title }: Campaign) => {
         </Card.Header>
         <Card.Meta>{address}</Card.Meta>
         <Card.Description>
-          <h3>{description}</h3>
+          <h3>
+            {description.length > 200
+              ? `${description.slice(0, 200)}...`
+              : description}
+          </h3>
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
