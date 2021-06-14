@@ -8,27 +8,32 @@ contract Campaign {
     uint256 minContribution;
     string description;
     string title;
+    string image;
     mapping(uint256 => Types.Request) requests;
     uint256 numRequests;
     mapping(address => bool) approvers;
     uint256 approversCount;
     
-    constructor(uint256 minimum, string memory _title, string memory desc, address sender) {
+    constructor(
+        uint256 minimum, 
+        string memory _title, 
+        string memory desc, 
+        string memory _image, 
+        address sender
+    ) {
         minContribution = minimum;
         title = _title;
         description = desc;
+        image = _image;
         approversCount = 0;
         numRequests = 0;
         manager = sender;
     }
     
     function getSummary() public view returns (
-        uint256, 
-        uint256, 
-        uint256, 
-        uint256, 
-        string memory, 
-        string memory
+        uint256, uint256, uint256, uint256, 
+        string memory, string memory, string memory, 
+        address
     ) {
         return (
             minContribution,
@@ -36,7 +41,9 @@ contract Campaign {
             approversCount,
             address(this).balance,
             title,
-            description
+            description,
+            image,
+            manager
         );
     }
     
@@ -76,6 +83,18 @@ contract Campaign {
         
         req.recipient.transfer(req.value);
         req.complete = true;
+    }
+    
+    function updateDetails(
+        uint256 _minContribution, 
+        string memory _title, 
+        string memory _description, 
+        string memory _image
+    ) public owner {
+        title = _title;
+        description = _description;
+        image = _image;
+        minContribution = _minContribution;
     }
     
     modifier owner() {
