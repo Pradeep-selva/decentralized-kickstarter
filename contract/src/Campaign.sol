@@ -85,18 +85,6 @@ contract Campaign {
         req.complete = true;
     }
     
-    function updateDetails(
-        uint256 _minContribution, 
-        string memory _title, 
-        string memory _description, 
-        string memory _image
-    ) public owner {
-        title = _title;
-        description = _description;
-        image = _image;
-        minContribution = _minContribution;
-    }
-    
     modifier owner() {
         require(msg.sender == manager);
         _;
