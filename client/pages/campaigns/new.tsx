@@ -93,7 +93,13 @@ class NewCampaign extends Component<any, IState> {
           <Container className={styles.centerContainer}>
             {showStatus && (
               <StatusIndicator
-                status={loading ? "waiting" : !!errors ? "error" : "success"}
+                status={
+                  loading
+                    ? "waiting"
+                    : !!errors || !!values.title.length
+                    ? "error"
+                    : "success"
+                }
                 error={
                   "An error occurred while creating campaign. Do you have metamask installed?"
                 }

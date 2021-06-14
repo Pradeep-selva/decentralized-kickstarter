@@ -25,7 +25,7 @@ const StatusIndicator = ({ status, error, success }: IProps) => {
       color = "green";
       break;
     case "error":
-      icon = "window close";
+      icon = "exclamation";
       title = "Error";
       body = error;
       color = "red";
