@@ -191,6 +191,7 @@ class NewCampaign extends Component<IProps, IState> {
           </Container>
         </Layout>
         <Confirm
+          content={"Are you sure you want to create this campaign?"}
           open={showConfirm}
           onCancel={this.closeDialog}
           onConfirm={() => {

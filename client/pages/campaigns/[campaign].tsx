@@ -86,7 +86,8 @@ class ViewCampaign extends Component<IProps, {}> {
 
   render() {
     const {
-      summary: { title, description, image }
+      summary: { title, description, image, minContribution },
+      address
     } = this.props;
 
     return (
@@ -105,7 +106,10 @@ class ViewCampaign extends Component<IProps, {}> {
                   {!!image && <Image src={image} />}
                 </Grid.Column>
                 <Grid.Column computer={"3"} mobile={"12"}>
-                  <ContributionForm />
+                  <ContributionForm
+                    minContribution={minContribution}
+                    address={address}
+                  />
                 </Grid.Column>
               </Grid.Row>
             </Grid>

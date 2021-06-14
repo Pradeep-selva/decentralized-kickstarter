@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Form,
-  Button,
-  Confirm,
-  Input,
-  TextArea,
-  Icon,
-  Segment
-} from "semantic-ui-react";
-import { Layout, StatusIndicator } from "../components";
+import { Form, Button, Confirm, Input } from "semantic-ui-react";
+import { StatusIndicator } from "../components";
 import styles from "../styles/Pages.module.css";
-import { useValidateNewCampaign } from "../validators";
-import { CampaignErrors, CampaignPayload } from "../types/validators";
-import { Factory, web3 } from "../instances";
-import RouteNames from "../routes";
+import { useValidateContribution } from "../validators";
+import { Campaign, web3 } from "../instances";
 
 type IState = {
-  errors: CampaignErrors | null;
+  error: string | null;
   loading: boolean;
   showConfirm: boolean;
   showStatus: boolean;
@@ -25,7 +14,12 @@ type IState = {
   failMessage: string;
 };
 
-class ContributionForm extends Component<{}, IState> {
+interface IProps {
+  minContribution: string;
+  address: string;
+}
+
+class ContributionForm extends Component<IProps, IState> {
   constructor(props) {
     super(props);
 
@@ -33,7 +27,7 @@ class ContributionForm extends Component<{}, IState> {
       loading: false,
       showConfirm: false,
       showStatus: false,
-      errors: null,
+      error: null,
       failMessage: "",
       contribution: ""
     };
@@ -41,42 +35,48 @@ class ContributionForm extends Component<{}, IState> {
 
   handleSubmit = async () => {
     const { contribution } = this.state;
-    //   const [payload, errors] = useValidateContributionForm(values);
+    const [payload, error] = useValidateContribution(
+      contribution,
+      this.props.minContribution
+    );
 
-    //   if (!!errors) this.setState({ errors });
-    //   else {
-    //     this.toggleLoading();
-    //     const { description, minContribution, title, image } = payload;
-    //     this.setState({ showStatus: true });
+    if (!!error) this.setState({ error });
+    else {
+      this.toggleLoading();
+      this.setState({ showStatus: true });
 
-    //     let accounts;
+      let accounts;
 
-    //     try {
-    //       accounts = await web3.eth.getAccounts();
+      try {
+        accounts = await web3.eth.getAccounts();
+        const campaign = Campaign(this.props.address);
 
-    //       await Factory.methods
-    //         .createCampaign(minContribution, title, description, image)
-    //         ?.send({ from: accounts[0] });
+        await campaign.methods.contribute()?.send({
+          from: accounts[0],
+          value: payload
+        });
 
-    //       this.setState({
-    //         contribution: "",
-    //         errors: null,
-    //         failMessage: ""
-    //       });
-    //     } catch (err) {
-    //       this.setState({
-    //         failMessage: !!accounts.length
-    //           ? err.message
-    //           : "Transaction failed! Make sure you have metamask installed to make a transaction.",
-    //         errors: null
-    //       });
-    //     } finally {
-    //       this.toggleLoading();
-    //       setTimeout(() => {
-    //         this.setState({ showStatus: false });
-    //       }, 5000);
-    //     }
-    //   }
+        this.setState({
+          contribution: "",
+          error: null,
+          failMessage: ""
+        });
+      } catch (err) {
+        this.setState({
+          failMessage: !!accounts.length
+            ? err.message.includes("MetaMask")
+              ? err.message
+              : "Transaction failed! You are an existing contributor"
+            : "Transaction failed! Make sure you have metamask installed to make a transaction.",
+          error: null
+        });
+      } finally {
+        this.toggleLoading();
+        setTimeout(() => {
+          this.setState({ showStatus: false });
+        }, 5000);
+      }
+    }
   };
 
   toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
@@ -86,7 +86,7 @@ class ContributionForm extends Component<{}, IState> {
   render() {
     const {
       contribution,
-      errors,
+      error,
       showConfirm,
       loading,
       showStatus,
@@ -102,7 +102,7 @@ class ContributionForm extends Component<{}, IState> {
               loading ? "waiting" : !!failMessage.length ? "error" : "success"
             }
             error={failMessage}
-            success={"Your campaign was successfully created!"}
+            success={"Your are now a contributor!"}
           />
         )}
         <Form onSubmit={() => this.setState({ showConfirm: true })}>
@@ -118,7 +118,7 @@ class ContributionForm extends Component<{}, IState> {
                 this.setState({ contribution: value })
               }
             />
-            <p className={styles.error}>{errors?.minContribution}</p>
+            <p className={styles.error}>{error}</p>
           </Form.Field>
           <Button
             loading={loading}

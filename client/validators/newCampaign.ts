@@ -21,7 +21,7 @@ export default ({
   if (title.length > 100)
     errors["title"] = "Title can't be longer than 50 characters";
 
-  if (!contribution)
+  if (contribution <= 0)
     errors["minContribution"] = "Minimum contribution must be > 1 wei";
 
   const imageWithoutQuery = image.slice(0, image.indexOf("?"));
