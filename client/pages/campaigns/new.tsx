@@ -4,21 +4,28 @@ import { Layout } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { useValidateNewCampaign } from "../../validators";
+import { CampaignErrors, CampaignPayload } from "../../types/validators";
 
 type IState = {
-  minContribution: string;
-  title: string;
-  description: string;
-} & { [x: string]: string };
+  message: string;
+  errors: CampaignErrors;
+  loading: boolean;
+  values: CampaignPayload;
+};
 
 class NewCampaign extends Component<any, IState> {
   constructor(props) {
     super(props);
 
     this.state = {
-      description: "",
-      minContribution: "",
-      title: ""
+      message: "",
+      loading: false,
+      errors: {},
+      values: {
+        description: "",
+        minContribution: "",
+        title: ""
+      }
     };
   }
 
@@ -27,22 +34,30 @@ class NewCampaign extends Component<any, IState> {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) =>
-    this.setState({
-      [event.target.name]: event.target.value
-    });
+    this.setState((state) => ({
+      values: {
+        ...state.values,
+        [event.target.name]: event.target.value
+      }
+    }));
 
   handleSubmit = () => {
-    const { description, minContribution, title } = this.state;
-    const [payload, errors] = useValidateNewCampaign({
-      description,
-      minContribution,
-      title
-    });
+    const { values } = this.state;
+    const [payload, errors] = useValidateNewCampaign(values);
 
-    console.log(payload, errors);
+    if (!!Object.keys(errors).length) this.setState({ errors });
+    else {
+      this.toggleLoading();
+      this.setState({ message: "Waiting for transaction confirmation..." });
+      console.log(payload);
+    }
   };
 
+  toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
+
   render() {
+    const { values, errors } = this.state;
+
     return (
       <main className={homeStyles.main}>
         <Layout>
@@ -51,23 +66,32 @@ class NewCampaign extends Component<any, IState> {
               <Form.Field>
                 <label>Minimum Contribution (wei)</label>
                 <input
+                  value={values.minContribution}
                   type={"number"}
                   name={"minContribution"}
                   onChange={this.handleChange}
                 />
+                <p className={styles.error}>{errors.minContribution}</p>
               </Form.Field>
               <Form.Field>
                 <label>Title</label>
-                <input name={"title"} onChange={this.handleChange} />
+                <input
+                  value={values.title}
+                  name={"title"}
+                  onChange={this.handleChange}
+                />
+                <p className={styles.error}>{errors.title}</p>
               </Form.Field>
               <Form.Field>
                 <label>Description</label>
                 <textarea
+                  value={values.description}
                   name={"description"}
                   maxLength={1000}
                   rows={5}
                   onChange={this.handleChange}
                 />
+                <p className={styles.error}>{errors.description}</p>
               </Form.Field>
               <Button size={"huge"} color={"blue"} type={"submit"}>
                 Create

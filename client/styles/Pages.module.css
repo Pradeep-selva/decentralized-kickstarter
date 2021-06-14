@@ -3,3 +3,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.error {
+  font-size: 1rem;
+  color: #eb0c0c;
+}
