@@ -92,16 +92,31 @@ class ViewCampaign extends Component<IProps, {}> {
     return (
       <main className={homeStyles.main}>
         <Layout>
-          <Container className={styles.centerContainer}>
-            <h1>
-              <u>
-                <b>{title}</b>
-              </u>
-            </h1>
-            <h3 className={styles.greyText}>{description}</h3>
-            {!!image && <Image src={image} />}
-
-            <div style={{ marginTop: "4vh" }}>{this.renderCards()}</div>
+          <Container fluid className={styles.centerContainer}>
+            <Grid columns={2} centered divided>
+              <Grid.Row>
+                <Grid.Column computer={"9"} mobile={"12"} textAlign={"center"}>
+                  <h1>
+                    <u>
+                      <b>{title}</b>
+                    </u>
+                  </h1>
+                  <h3 className={styles.greyText}>{description}</h3>
+                  {!!image && <Image src={image} />}
+                </Grid.Column>
+                <Grid.Column computer={"3"} mobile={"12"}>
+                  <h2 style={{ textAlign: "center" }}>
+                    Want to become a contributor?
+                  </h2>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <div style={{ marginTop: "6vh" }}>
+              <h2>Campaign attributes</h2>
+            </div>
+            <Container>
+              <div style={{ marginTop: "4vh" }}>{this.renderCards()}</div>
+            </Container>
           </Container>
         </Layout>
       </main>
