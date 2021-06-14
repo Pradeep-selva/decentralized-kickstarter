@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Container, Form, Button, Confirm, Message } from "semantic-ui-react";
-import { Layout } from "../../components";
+import { Container, Form, Button, Confirm } from "semantic-ui-react";
+import { Layout, StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { useValidateNewCampaign } from "../../validators";
@@ -8,11 +8,17 @@ import { CampaignErrors, CampaignPayload } from "../../types/validators";
 import { Factory, web3 } from "../../instances";
 
 type IState = {
-  message: string;
-  errors: CampaignErrors;
+  errors: CampaignErrors | null;
   loading: boolean;
   showConfirm: boolean;
+  showStatus: boolean;
   values: CampaignPayload;
+};
+
+const defaultValues: CampaignPayload = {
+  description: "",
+  minContribution: "0",
+  title: ""
 };
 
 class NewCampaign extends Component<any, IState> {
@@ -20,14 +26,12 @@ class NewCampaign extends Component<any, IState> {
     super(props);
 
     this.state = {
-      message: "",
       loading: false,
       showConfirm: false,
-      errors: {},
+      showStatus: false,
+      errors: null,
       values: {
-        description: "",
-        minContribution: "",
-        title: ""
+        ...defaultValues
       }
     };
   }
@@ -51,34 +55,51 @@ class NewCampaign extends Component<any, IState> {
     if (!!errors) this.setState({ errors });
     else {
       this.toggleLoading();
-      this.setState({ message: "Waiting for transaction confirmation..." });
-
       const { description, minContribution, title } = payload;
+      this.setState({ showStatus: true });
 
       try {
         const accounts = await web3.eth.getAccounts();
-        console.log(accounts);
+
         await Factory.methods
           .createCampaign(minContribution, title, description)
           ?.send({ from: accounts[0] });
+
+        this.setState({
+          values: { ...defaultValues },
+          errors: null
+        });
       } catch (err) {
         console.log(err);
       } finally {
-        this.setState({ message: "" });
         this.toggleLoading();
+        setTimeout(() => {
+          this.setState({ showStatus: false });
+        }, 5000);
       }
     }
   };
 
   toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
 
+  closeDialog = () => this.setState(() => ({ showConfirm: false }));
+
   render() {
-    const { values, errors, showConfirm, loading } = this.state;
+    const { values, errors, showConfirm, loading, showStatus } = this.state;
 
     return (
       <main className={homeStyles.main}>
         <Layout>
           <Container className={styles.centerContainer}>
+            {showStatus && (
+              <StatusIndicator
+                status={loading ? "waiting" : !!errors ? "error" : "success"}
+                error={
+                  "An error occurred while creating campaign. Do you have metamask installed?"
+                }
+                success={"Your campaign was successfully created!"}
+              />
+            )}
             <Form onSubmit={() => this.setState({ showConfirm: true })}>
               <Form.Field>
                 <label>Minimum Contribution (wei)</label>
@@ -88,7 +109,7 @@ class NewCampaign extends Component<any, IState> {
                   name={"minContribution"}
                   onChange={this.handleChange}
                 />
-                <p className={styles.error}>{errors.minContribution}</p>
+                <p className={styles.error}>{errors?.minContribution}</p>
               </Form.Field>
               <Form.Field>
                 <label>Title</label>
@@ -97,7 +118,7 @@ class NewCampaign extends Component<any, IState> {
                   name={"title"}
                   onChange={this.handleChange}
                 />
-                <p className={styles.error}>{errors.title}</p>
+                <p className={styles.error}>{errors?.title}</p>
               </Form.Field>
               <Form.Field>
                 <label>Description</label>
@@ -108,7 +129,7 @@ class NewCampaign extends Component<any, IState> {
                   rows={5}
                   onChange={this.handleChange}
                 />
-                <p className={styles.error}>{errors.description}</p>
+                <p className={styles.error}>{errors?.description}</p>
               </Form.Field>
               <Button
                 disabled={loading}
@@ -123,8 +144,11 @@ class NewCampaign extends Component<any, IState> {
         </Layout>
         <Confirm
           open={showConfirm}
-          onCancel={() => this.setState({ showConfirm: false })}
-          onConfirm={this.handleSubmit}
+          onCancel={this.closeDialog}
+          onConfirm={() => {
+            this.closeDialog();
+            this.handleSubmit();
+          }}
         />
       </main>
     );

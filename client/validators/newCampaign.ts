@@ -16,7 +16,7 @@ export default ({
   };
 
   if (!title.length) errors["title"] = "Title can't be empty";
-  if (title.length > 50)
+  if (title.length > 100)
     errors["title"] = "Title can't be longer than 50 characters";
 
   if (!contribution)

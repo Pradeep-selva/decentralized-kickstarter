@@ -34,7 +34,7 @@ const StatusIndicator = ({ status, error, success }: IProps) => {
 
   return (
     <Message icon className={color}>
-      <Icon name={icon} loading />
+      <Icon name={icon} loading={status === "waiting"} />
       <Message.Content>
         <Message.Header>{title}</Message.Header>
         {body}
