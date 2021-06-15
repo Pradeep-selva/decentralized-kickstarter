@@ -5,6 +5,7 @@ import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
 import { Campaign, web3 } from "../../../instances";
 import { CampaignSummary } from "../../../types";
+import { getCampaignData } from "../../../utils";
 
 interface IProps {
   summary: CampaignSummary;
@@ -28,19 +29,7 @@ class ViewCampaign extends Component<IProps, IState> {
 
   static async getInitialProps(context) {
     const address = context.query.campaign;
-    const campaign = Campaign(address);
-    const payload = await campaign.methods.getSummary()?.call();
-
-    const summary: CampaignSummary = {
-      minContribution: payload[0],
-      numRequests: payload[1],
-      contributors: payload[2],
-      balance: payload[3],
-      title: payload[4],
-      description: payload[5],
-      image: payload[6],
-      manager: payload[7]
-    };
+    const summary = await getCampaignData(address);
 
     return { summary, address };
   }

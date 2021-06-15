@@ -1,4 +1,4 @@
-import { Factory, web3 } from "../instances";
+import { Factory } from "../instances";
 import { Campaign } from "../types";
 
 export const getAllCampaigns = async (): Promise<

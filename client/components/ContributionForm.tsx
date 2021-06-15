@@ -4,6 +4,7 @@ import { StatusIndicator } from "../components";
 import styles from "../styles/Pages.module.css";
 import { useValidateContribution } from "../validators";
 import { Campaign, web3 } from "../instances";
+import { makeContribution } from "../utils";
 
 type IState = {
   error: string | null;
@@ -46,25 +47,14 @@ class ContributionForm extends Component<IProps, IState> {
       this.toggleLoading();
       this.setState({ showStatus: true });
 
-      let accounts;
+      const accounts = await web3.eth.getAccounts();
+      const err = await makeContribution(
+        this.props.address,
+        accounts[0],
+        payload
+      );
 
-      try {
-        accounts = await web3.eth.getAccounts();
-        const campaign = Campaign(this.props.address);
-
-        await campaign.methods.contribute()?.send({
-          from: accounts[0],
-          value: payload
-        });
-
-        this.props.callback(payload);
-
-        this.setState({
-          contribution: "",
-          error: null,
-          failMessage: ""
-        });
-      } catch (err) {
+      if (err) {
         this.setState({
           failMessage: !!accounts.length
             ? err.message.includes("MetaMask")
@@ -73,12 +63,20 @@ class ContributionForm extends Component<IProps, IState> {
             : "Transaction failed! Make sure you have metamask installed to make a transaction.",
           error: null
         });
-      } finally {
-        this.toggleLoading();
-        setTimeout(() => {
-          this.setState({ showStatus: false });
-        }, 5000);
+      } else {
+        this.props.callback(payload);
+
+        this.setState({
+          contribution: "",
+          error: null,
+          failMessage: ""
+        });
       }
+
+      this.toggleLoading();
+      setTimeout(() => {
+        this.setState({ showStatus: false });
+      }, 5000);
     }
   };
 
