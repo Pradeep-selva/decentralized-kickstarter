@@ -22,3 +22,11 @@ export interface CampaignSummary {
   image: string;
   manager: string;
 }
+
+export interface Request {
+  description: string;
+  value: string;
+  recipient: string;
+  approvalCount: number;
+  complete: boolean;
+}
