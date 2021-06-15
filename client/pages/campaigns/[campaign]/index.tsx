@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Container, Image, Card, Grid } from "semantic-ui-react";
-import { ContributionForm, Layout, StatusIndicator } from "../../components";
-import styles from "../../styles/Pages.module.css";
-import homeStyles from "../../styles/Home.module.css";
-import { Campaign, web3 } from "../../instances";
-import { CampaignSummary } from "../../types";
+import { ContributionForm, Layout } from "../../../components";
+import styles from "../../../styles/Pages.module.css";
+import homeStyles from "../../../styles/Home.module.css";
+import { Campaign, web3 } from "../../../instances";
+import { CampaignSummary } from "../../../types";
 
 interface IProps {
   summary: CampaignSummary;
