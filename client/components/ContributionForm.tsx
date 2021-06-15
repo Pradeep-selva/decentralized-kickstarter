@@ -125,7 +125,7 @@ class ContributionForm extends Component<IProps, IState> {
             loading={loading}
             disabled={loading}
             size={"small"}
-            color={"blue"}
+            primary
             type={"submit"}
           >
             Contribute

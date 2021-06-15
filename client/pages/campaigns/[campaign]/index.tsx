@@ -1,11 +1,21 @@
 import React, { Component } from "react";
-import { Container, Image, Card, Grid } from "semantic-ui-react";
+import {
+  Container,
+  Image,
+  Card,
+  Grid,
+  Divider,
+  Button,
+  Icon
+} from "semantic-ui-react";
+import Link from "next/link";
 import { ContributionForm, Layout } from "../../../components";
 import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
-import { Campaign, web3 } from "../../../instances";
+import { web3 } from "../../../instances";
 import { CampaignSummary } from "../../../types";
 import { getCampaignData } from "../../../utils";
+import RouteNames from "../../../routes";
 
 interface IProps {
   summary: CampaignSummary;
@@ -118,6 +128,19 @@ class ViewCampaign extends Component<IProps, IState> {
                   {!!image && <Image src={image} />}
                 </Grid.Column>
                 <Grid.Column computer={"3"} mobile={"12"}>
+                  <Grid centered>
+                    <Button size={"huge"} primary className={styles.marginTop}>
+                      <Link
+                        href={RouteNames.requestsByCampaign.absolute}
+                        as={RouteNames.requestsByCampaign.as(address)}
+                      >
+                        View Requests
+                      </Link>
+                    </Button>
+                  </Grid>
+                  <Divider horizontal className={styles.margin}>
+                    .
+                  </Divider>
                   <ContributionForm
                     minContribution={minContribution}
                     address={address}

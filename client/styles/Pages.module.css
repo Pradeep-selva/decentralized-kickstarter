@@ -19,3 +19,11 @@
 .greyText {
   color: #48494a;
 }
+
+.margin {
+  margin: 3rem 0 !important;
+}
+
+.marginTop {
+  margin-top: 3rem !important;
+}
