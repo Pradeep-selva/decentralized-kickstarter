@@ -3,10 +3,10 @@ import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { Button, Card, Grid } from "semantic-ui-react";
-import { Factory } from "../instances";
 import { Campaign } from "../types";
 import { CampaignCard, Layout } from "../components";
 import RouteNames from "../routes";
+import { getAllCampaigns } from "../utils";
 
 interface IProps {
   campaigns: Array<Campaign>;
@@ -15,21 +15,8 @@ interface IProps {
 
 class Home extends React.Component<IProps, any> {
   static async getInitialProps() {
-    try {
-      const payload = await Factory.methods?.getCampaigns()?.call();
-      const campaigns: Array<Campaign> = Array.from({
-        length: payload[0].length
-      }).map((_, index) => ({
-        address: payload[0][index],
-        title: payload[1][index],
-        description: payload[2][index],
-        image: payload[3][index]
-      }));
-
-      return { campaigns };
-    } catch (error) {
-      return { error };
-    }
+    const [campaigns, error] = await getAllCampaigns();
+    return { campaigns, error };
   }
 
   render() {

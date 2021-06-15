@@ -16,6 +16,7 @@ import { useValidateNewCampaign } from "../../validators";
 import { CampaignErrors, CampaignPayload } from "../../types/validators";
 import { Factory, web3 } from "../../instances";
 import RouteNames from "../../routes";
+import { createCampaign } from "../../utils";
 
 type IState = {
   errors: CampaignErrors | null;
@@ -72,38 +73,32 @@ class NewCampaign extends Component<IProps, IState> {
     if (!!errors) this.setState({ errors });
     else {
       this.toggleLoading();
-      const { description, minContribution, title, image } = payload;
       this.setState({ showStatus: true });
 
-      let accounts;
+      const accounts = await web3.eth.getAccounts();
+      const err = await createCampaign(payload, accounts[0]);
 
-      try {
-        accounts = await web3.eth.getAccounts();
-
-        await Factory.methods
-          .createCampaign(minContribution, title, description, image)
-          ?.send({ from: accounts[0] });
-
-        this.setState({
-          values: { ...defaultValues },
-          errors: null,
-          failMessage: ""
-        });
-      } catch (err) {
+      if (err) {
         this.setState({
           failMessage: !!accounts.length
             ? err.message
             : "Transaction failed! Make sure you have metamask installed to make a transaction.",
           errors: null
         });
-      } finally {
-        this.toggleLoading();
-        setTimeout(() => {
-          this.setState({ showStatus: false });
-          !this.state.failMessage.length &&
-            this.props.router.push(RouteNames.home);
-        }, 5000);
+      } else {
+        this.setState({
+          values: { ...defaultValues },
+          errors: null,
+          failMessage: ""
+        });
       }
+
+      this.toggleLoading();
+      setTimeout(() => {
+        this.setState({ showStatus: false });
+        !this.state.failMessage.length &&
+          this.props.router.push(RouteNames.home);
+      }, 5000);
     }
   };
 
