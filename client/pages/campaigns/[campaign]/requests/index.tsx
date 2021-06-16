@@ -5,7 +5,7 @@ import { getCampaignRequests } from "../../../../utils";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
 import { Layout } from "../../../../components";
-import RouteNames from "../../../../routes";
+import RouteNames from "../../../../config/routes";
 
 interface IProps {
   requests: Array<any>;

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Card, Button, Image } from "semantic-ui-react";
 import { Campaign } from "../types";
-import RouteNames from "../routes";
+import RouteNames from "../config/routes";
 
 const CampaignCard = ({ address, description, title, image }: Campaign) => {
   return (

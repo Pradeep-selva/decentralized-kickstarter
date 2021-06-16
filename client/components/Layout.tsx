@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import styles from "../styles/Components.module.css";
 import { Button, Menu, Icon } from "semantic-ui-react";
-import routes from "../routes";
+import routes from "../config/routes";
 
 const Layout = ({ children }) => {
   return (

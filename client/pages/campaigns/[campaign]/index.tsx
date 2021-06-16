@@ -15,7 +15,7 @@ import homeStyles from "../../../styles/Home.module.css";
 import { web3 } from "../../../instances";
 import { CampaignSummary } from "../../../types";
 import { getCampaignData } from "../../../utils";
-import RouteNames from "../../../routes";
+import RouteNames from "../../../config/routes";
 
 interface IProps {
   summary: CampaignSummary;

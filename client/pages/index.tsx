@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import { Button, Card, Grid } from "semantic-ui-react";
 import { Campaign } from "../types";
 import { CampaignCard, Layout } from "../components";
-import RouteNames from "../routes";
+import RouteNames from "../config/routes";
 import { getAllCampaigns } from "../utils";
 
 interface IProps {
