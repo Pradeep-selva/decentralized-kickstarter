@@ -61,3 +61,21 @@ export const getCampaignRequests = async (address: string) => {
 
   return new Promise((resolve) => resolve(requests));
 };
+
+export const approveRequest = async (
+  address: string,
+  user: string,
+  index: number
+): Promise<any> => {
+  const campaign = Campaign(address);
+
+  try {
+    await campaign.methods.approveRequest(index)?.send({
+      from: user
+    });
+
+    return new Promise((resolve) => resolve(false));
+  } catch (err) {
+    return new Promise((resolve) => resolve(err));
+  }
+};

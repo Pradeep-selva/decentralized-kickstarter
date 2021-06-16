@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import Link from "next/link";
+import Router from "next/router";
 import { Container, Button, Icon } from "semantic-ui-react";
-import { getCampaignData, getCampaignRequests } from "../../../../utils";
+import {
+  approveRequest,
+  getCampaignData,
+  getCampaignRequests
+} from "../../../../utils";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
-import { CustomTable, Layout } from "../../../../components";
+import { CustomTable, Layout, StatusIndicator } from "../../../../components";
 import RouteNames from "../../../../config/routes";
 import { getRequestColumns } from "../../../../config";
 import { DataCell } from "../../../../types";
+import { web3 } from "../../../../instances";
 
 interface IProps {
   requests: Array<any>;
@@ -17,7 +23,11 @@ interface IProps {
 }
 
 interface IState {
+  user: string;
   tableColumns: Array<DataCell>;
+  showStatus: boolean;
+  loading: boolean;
+  failMessage: string;
 }
 
 class Requests extends Component<IProps, IState> {
@@ -25,7 +35,11 @@ class Requests extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      tableColumns: []
+      tableColumns: [],
+      failMessage: "",
+      loading: false,
+      showStatus: false,
+      user: ""
     };
   }
 
@@ -39,13 +53,57 @@ class Requests extends Component<IProps, IState> {
 
   async componentDidMount() {
     const { contributors, manager } = this.props;
-    const tableColumns = await getRequestColumns({ contributors, manager });
+    const accounts = await web3.eth.getAccounts();
 
-    this.setState({ tableColumns });
+    const tableColumns = await getRequestColumns({
+      contributors,
+      manager,
+      user: accounts[0],
+      functions: {
+        approveRequest: this.handleApproval
+      }
+    });
+
+    this.setState({ tableColumns, user: accounts[0] });
   }
+
+  handleApproval = async (index: number) => {
+    this.toggleLoading();
+    this.setState({
+      showStatus: true
+    });
+
+    const { address } = this.props;
+    const { user } = this.state;
+
+    const err = await approveRequest(address, user, index);
+
+    if (err) {
+      this.setState({
+        failMessage: !!user
+          ? err.message.includes("MetaMask")
+            ? err.message
+            : "Transaction failed! You aren't a contributor or have already contributed."
+          : "Transaction failed! Make sure you have metamask installed to make a transaction."
+      });
+    } else {
+      this.setState({
+        failMessage: ""
+      });
+    }
+
+    this.toggleLoading();
+    setTimeout(() => {
+      this.setState({ showStatus: false });
+      Router.reload();
+    }, 5000);
+  };
+
+  toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
 
   render() {
     const { requests, address } = this.props;
+    const { failMessage, loading, showStatus, tableColumns } = this.state;
 
     return (
       <main className={homeStyles.main}>
@@ -73,11 +131,22 @@ class Requests extends Component<IProps, IState> {
               >{`<{ ${address} }>`}</h3>
             </div>
             <div style={{ marginTop: "4rem" }}>
-              {!!requests.length ? (
-                <CustomTable
-                  data={requests}
-                  columns={this.state.tableColumns}
+              {showStatus && (
+                <StatusIndicator
+                  icon
+                  status={
+                    loading
+                      ? "waiting"
+                      : !!failMessage.length
+                      ? "error"
+                      : "success"
+                  }
+                  error={failMessage}
+                  success={"Your campaign was successfully created!"}
                 />
+              )}
+              {!!requests.length ? (
+                <CustomTable data={requests} columns={tableColumns} />
               ) : (
                 <div
                   className={styles.centerContainer}

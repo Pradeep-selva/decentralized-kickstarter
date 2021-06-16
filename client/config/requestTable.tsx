@@ -5,8 +5,11 @@ import { DataCell } from "../types";
 
 export const getRequestColumns = async ({
   manager,
-  contributors
+  contributors,
+  user,
+  functions
 }): Promise<Array<DataCell>> => {
+  console.log(user, "user", manager, "manager");
   let requestColumns: Array<DataCell> = [
     {
       key: "value",
@@ -29,46 +32,47 @@ export const getRequestColumns = async ({
       key: "approvalCount",
       title: "Approvals",
       render: ({ row: { approvalCount } }) => `${approvalCount}/${contributors}`
-    },
-    {
-      key: "approve",
-      title: "Approve Request",
-      render: ({ row: { complete } }) => {
-        const closed = Boolean(complete);
-        return (
-          <Button
-            disabled={closed}
-            secondary
-            fluid
-            icon={closed ? "dont" : "check square"}
-          />
-        );
-      }
     }
   ];
 
-  const accounts = await web3.eth.getAccounts();
+  requestColumns = [
+    ...requestColumns,
+    user === manager
+      ? {
+          key: "finalize",
+          title: "Finalize Request",
+          render: ({ row: { complete, approvalCount } }) => {
+            const invalid =
+              Boolean(complete) || approvalCount < contributors / 2;
 
-  if (accounts[0] === manager)
-    requestColumns = [
-      ...requestColumns,
-      {
-        key: "finalize",
-        title: "Finalize Request",
-        render: ({ row: { complete, approvalCount } }) => {
-          const invalid = Boolean(complete) && approvalCount < contributors / 2;
-
-          return (
-            <Button
-              disabled={invalid}
-              primary
-              fluid
-              icon={invalid ? "dont" : "check square"}
-            />
-          );
+            return (
+              <Button
+                disabled={invalid}
+                primary
+                fluid
+                icon={invalid ? "dont" : "check square"}
+              />
+            );
+          }
         }
-      }
-    ];
+      : {
+          key: "approve",
+          title: "Approve Request",
+          render: ({ row: { complete }, index }) => {
+            const closed = Boolean(complete);
+
+            return (
+              <Button
+                onClick={() => functions.approveRequest(index)}
+                disabled={closed}
+                secondary
+                fluid
+                icon={closed ? "dont" : "check square"}
+              />
+            );
+          }
+        }
+  ];
 
   return new Promise((resolve) => resolve(requestColumns));
 };

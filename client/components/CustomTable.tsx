@@ -20,9 +20,9 @@ const CustomTable = ({ columns, data, extraData = {} }: IProps) => {
       </Table.Header>
 
       <Table.Body>
-        {data.map((row) => (
+        {data.map((row, index) => (
           <Table.Row>
-            {columns.map(({ key, render }, index) => (
+            {columns.map(({ key, render }) => (
               <Table.Cell>
                 {!!render ? render({ row, extraData, index }) : row[key]}
               </Table.Cell>
