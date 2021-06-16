@@ -6,24 +6,46 @@ import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
 import { CustomTable, Layout } from "../../../../components";
 import RouteNames from "../../../../config/routes";
-import { requestColumns } from "../../../../config";
+import { getRequestColumns } from "../../../../config";
+import { DataCell } from "../../../../types";
 
 interface IProps {
   requests: Array<any>;
   address: string;
   contributors: string;
+  manager: string;
 }
 
-class Requests extends Component<IProps, {}> {
+interface IState {
+  tableColumns: Array<DataCell>;
+}
+
+class Requests extends Component<IProps, IState> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tableColumns: []
+    };
+  }
+
   static async getInitialProps(context) {
     const address = context.query.campaign;
     const requests = await getCampaignRequests(address);
-    const { contributors } = await getCampaignData(address);
+    const { contributors, manager } = await getCampaignData(address);
 
-    return { requests, address, contributors };
+    return { requests, address, contributors, manager };
   }
+
+  async componentDidMount() {
+    const { contributors, manager } = this.props;
+    const tableColumns = await getRequestColumns({ contributors, manager });
+
+    this.setState({ tableColumns });
+  }
+
   render() {
-    const { requests, address, contributors } = this.props;
+    const { requests, address } = this.props;
 
     return (
       <main className={homeStyles.main}>
@@ -54,8 +76,7 @@ class Requests extends Component<IProps, {}> {
               {!!requests.length ? (
                 <CustomTable
                   data={requests}
-                  columns={requestColumns}
-                  extraData={{ contributors }}
+                  columns={this.state.tableColumns}
                 />
               ) : (
                 <div
