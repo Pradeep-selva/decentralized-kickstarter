@@ -16,10 +16,12 @@ export const requestColumns: Array<DataCell> = [
   {
     key: "complete",
     title: "Status",
-    render: (value) => (Boolean(value) ? "Closed" : "Open")
+    render: ({ row: { complete } }) => (Boolean(complete) ? "Closed" : "Open")
   },
   {
     key: "approvalCount",
-    title: "approvalCount"
+    title: "Approvals",
+    render: ({ row: { approvalCount }, extraData: { contributors } }) =>
+      `${approvalCount}/${contributors}`
   }
 ];

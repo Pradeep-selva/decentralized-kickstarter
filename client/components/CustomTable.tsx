@@ -5,9 +5,10 @@ import { DataCell } from "../types";
 interface IProps {
   columns: Array<DataCell>;
   data: Array<any>;
+  extraData?: any;
 }
 
-const CustomTable = ({ columns, data }: IProps) => {
+const CustomTable = ({ columns, data, extraData = {} }: IProps) => {
   return (
     <Table celled>
       <Table.Header>
@@ -21,8 +22,10 @@ const CustomTable = ({ columns, data }: IProps) => {
       <Table.Body>
         {data.map((row) => (
           <Table.Row>
-            {columns.map(({ key, render }) => (
-              <Table.Cell>{!!render ? render(row[key]) : row[key]}</Table.Cell>
+            {columns.map(({ key, render }, index) => (
+              <Table.Cell>
+                {!!render ? render({ row, extraData, index }) : row[key]}
+              </Table.Cell>
             ))}
           </Table.Row>
         ))}

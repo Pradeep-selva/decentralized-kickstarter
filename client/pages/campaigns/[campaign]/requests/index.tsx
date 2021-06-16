@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import { Container, Button } from "semantic-ui-react";
-import { getCampaignRequests } from "../../../../utils";
+import { getCampaignData, getCampaignRequests } from "../../../../utils";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
 import { CustomTable, Layout } from "../../../../components";
@@ -11,16 +11,18 @@ import { requestColumns } from "../../../../config";
 interface IProps {
   requests: Array<any>;
   address: string;
+  contributors: string;
 }
 
 class Requests extends Component<IProps, {}> {
   static async getInitialProps(context) {
     const address = context.query.campaign;
     const requests = await getCampaignRequests(address);
-    return { requests, address };
+    const { contributors } = await getCampaignData(address);
+    return { requests, address, contributors };
   }
   render() {
-    const { requests, address } = this.props;
+    const { requests, address, contributors } = this.props;
 
     return (
       <main className={homeStyles.main}>
@@ -49,7 +51,11 @@ class Requests extends Component<IProps, {}> {
             </div>
             <div style={{ marginTop: "4rem" }}>
               {!!requests.length ? (
-                <CustomTable data={requests} columns={requestColumns} />
+                <CustomTable
+                  data={requests}
+                  columns={requestColumns}
+                  extraData={{ contributors }}
+                />
               ) : (
                 <h2>There haven't been any requests created yet!</h2>
               )}
