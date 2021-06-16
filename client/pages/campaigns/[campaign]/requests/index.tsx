@@ -4,6 +4,7 @@ import Router from "next/router";
 import { Container, Button, Icon } from "semantic-ui-react";
 import {
   approveRequest,
+  finalizeRequest,
   getCampaignData,
   getCampaignRequests
 } from "../../../../utils";
@@ -60,14 +61,14 @@ class Requests extends Component<IProps, IState> {
       manager,
       user: accounts[0],
       functions: {
-        approveRequest: this.handleApproval
+        handleAction: this.handleAction
       }
     });
 
     this.setState({ tableColumns, user: accounts[0] });
   }
 
-  handleApproval = async (index: number) => {
+  handleAction = async (index: number, type: "approve" | "finalize") => {
     this.toggleLoading();
     this.setState({
       showStatus: true
@@ -76,14 +77,20 @@ class Requests extends Component<IProps, IState> {
     const { address } = this.props;
     const { user } = this.state;
 
-    const err = await approveRequest(address, user, index);
+    const request = type === "approve" ? approveRequest : finalizeRequest;
+
+    const err = await request(address, user, index);
 
     if (err) {
       this.setState({
         failMessage: !!user
           ? err.message.includes("MetaMask")
             ? err.message
-            : "Transaction failed! You aren't a contributor or have already contributed."
+            : `Transaction failed! ${
+                type === "approve"
+                  ? "You aren't a contributor or have already contributed."
+                  : "The campaign balance is too low or the recipient is invalid."
+              }`
           : "Transaction failed! Make sure you have metamask installed to make a transaction."
       });
     } else {
@@ -95,7 +102,7 @@ class Requests extends Component<IProps, IState> {
     this.toggleLoading();
     setTimeout(() => {
       this.setState({ showStatus: false });
-      Router.reload();
+      if (!err) Router.reload();
     }, 5000);
   };
 

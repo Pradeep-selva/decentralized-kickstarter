@@ -9,7 +9,6 @@ export const getRequestColumns = async ({
   user,
   functions
 }): Promise<Array<DataCell>> => {
-  console.log(user, "user", manager, "manager");
   let requestColumns: Array<DataCell> = [
     {
       key: "value",
@@ -41,12 +40,15 @@ export const getRequestColumns = async ({
       ? {
           key: "finalize",
           title: "Finalize Request",
-          render: ({ row: { complete, approvalCount } }) => {
+          render: ({ row: { complete, approvalCount }, index }) => {
             const invalid =
-              Boolean(complete) || approvalCount < contributors / 2;
+              Boolean(complete) ||
+              approvalCount < contributors / 2 ||
+              contributors === "0";
 
             return (
               <Button
+                onClick={() => functions.handleAction(index, "finalize")}
                 disabled={invalid}
                 primary
                 fluid
@@ -63,7 +65,7 @@ export const getRequestColumns = async ({
 
             return (
               <Button
-                onClick={() => functions.approveRequest(index)}
+                onClick={() => functions.handleAction(index, "approve")}
                 disabled={closed}
                 secondary
                 fluid
