@@ -13,8 +13,8 @@ const CustomTable = ({ columns, data, extraData = {} }: IProps) => {
     <Table celled>
       <Table.Header>
         <Table.Row>
-          {columns.map(({ title }) => (
-            <Table.HeaderCell>{title}</Table.HeaderCell>
+          {columns.map(({ title }, index) => (
+            <Table.HeaderCell key={index}>{title}</Table.HeaderCell>
           ))}
         </Table.Row>
       </Table.Header>
@@ -22,8 +22,8 @@ const CustomTable = ({ columns, data, extraData = {} }: IProps) => {
       <Table.Body>
         {data.map((row, index) => (
           <Table.Row>
-            {columns.map(({ key, render }) => (
-              <Table.Cell>
+            {columns.map(({ key, render }, _index) => (
+              <Table.Cell key={`${index}${_index}`}>
                 {!!render ? render({ row, extraData, index }) : row[key]}
               </Table.Cell>
             ))}

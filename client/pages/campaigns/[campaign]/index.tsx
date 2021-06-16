@@ -9,6 +9,7 @@ import {
   Icon
 } from "semantic-ui-react";
 import Link from "next/link";
+import Head from "next/head";
 import { ContributionForm, Layout } from "../../../components";
 import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
@@ -113,51 +114,68 @@ class ViewCampaign extends Component<IProps, IState> {
     } = this.state;
 
     return (
-      <main className={homeStyles.main}>
-        <Layout>
-          <Container fluid className={styles.centerContainer}>
-            <Grid columns={2} centered divided>
-              <Grid.Row>
-                <Grid.Column computer={"9"} mobile={"12"} textAlign={"center"}>
-                  <h1>
-                    <u>
-                      <b>{title}</b>
-                    </u>
-                  </h1>
-                  <h3 className={styles.greyText}>{description}</h3>
-                  {!!image && <Image src={image} />}
-                </Grid.Column>
-                <Grid.Column computer={"3"} mobile={"12"}>
-                  <Grid centered>
-                    <Button size={"huge"} primary className={styles.marginTop}>
-                      <Link
-                        href={RouteNames.requestsByCampaign.absolute}
-                        as={RouteNames.requestsByCampaign.as(address)}
+      <div>
+        <Head>
+          <title>D K: Campaign {address}</title>
+          <meta
+            name='description'
+            content={`Decentralized KickStarter - details of campaign ${address}`}
+          />
+        </Head>
+        <main className={homeStyles.main}>
+          <Layout>
+            <Container fluid className={styles.centerContainer}>
+              <Grid columns={2} centered divided>
+                <Grid.Row>
+                  <Grid.Column
+                    computer={"9"}
+                    mobile={"12"}
+                    textAlign={"center"}
+                  >
+                    <h1>
+                      <u>
+                        <b>{title}</b>
+                      </u>
+                    </h1>
+                    <h3 className={styles.greyText}>{description}</h3>
+                    {!!image && <Image src={image} />}
+                  </Grid.Column>
+                  <Grid.Column computer={"3"} mobile={"12"}>
+                    <Grid centered>
+                      <Button
+                        size={"huge"}
+                        primary
+                        className={styles.marginTop}
                       >
-                        View Requests
-                      </Link>
-                    </Button>
-                  </Grid>
-                  <Divider horizontal className={styles.margin}>
-                    .
-                  </Divider>
-                  <ContributionForm
-                    minContribution={minContribution}
-                    address={address}
-                    callback={this.refreshCallBack}
-                  />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-            <div style={{ marginTop: "6vh" }}>
-              <h2>Campaign attributes</h2>
-            </div>
-            <Container>
-              <div style={{ marginTop: "4vh" }}>{this.renderCards()}</div>
+                        <Link
+                          href={RouteNames.requestsByCampaign.absolute}
+                          as={RouteNames.requestsByCampaign.as(address)}
+                        >
+                          View Requests
+                        </Link>
+                      </Button>
+                    </Grid>
+                    <Divider horizontal className={styles.margin}>
+                      .
+                    </Divider>
+                    <ContributionForm
+                      minContribution={minContribution}
+                      address={address}
+                      callback={this.refreshCallBack}
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+              <div style={{ marginTop: "6vh" }}>
+                <h2>Campaign attributes</h2>
+              </div>
+              <Container>
+                <div style={{ marginTop: "4vh" }}>{this.renderCards()}</div>
+              </Container>
             </Container>
-          </Container>
-        </Layout>
-      </main>
+          </Layout>
+        </main>
+      </div>
     );
   }
 }

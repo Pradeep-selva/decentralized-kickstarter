@@ -25,8 +25,11 @@ class Home extends React.Component<IProps, any> {
     return (
       <div>
         <Head>
-          <title>Decentralized Kickstarter</title>
-          <meta name='description' content='Decentralized Kickstarter' />
+          <title>Decentralized KickStarter</title>
+          <meta
+            name='description'
+            content='Decentralized KickStarter - home page'
+          />
         </Head>
 
         <main className={styles.main}>
