@@ -67,7 +67,7 @@ export const getRequestColumns = async ({
               <Button
                 onClick={() => functions.handleAction(index, "approve")}
                 disabled={closed}
-                secondary
+                color={"green"}
                 fluid
                 icon={closed ? "dont" : "check square"}
               />

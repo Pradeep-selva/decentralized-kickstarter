@@ -109,8 +109,8 @@ class Requests extends Component<IProps, IState> {
   toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
 
   render() {
-    const { requests, address } = this.props;
-    const { failMessage, loading, showStatus, tableColumns } = this.state;
+    const { requests, address, manager } = this.props;
+    const { failMessage, loading, showStatus, tableColumns, user } = this.state;
 
     return (
       <main className={homeStyles.main}>
@@ -138,6 +138,14 @@ class Requests extends Component<IProps, IState> {
               >{`<{ ${address} }>`}</h3>
             </div>
             <div style={{ marginTop: "4rem" }}>
+              {user === manager && (
+                <Link
+                  href={RouteNames.newRequest.absolute}
+                  as={RouteNames.newRequest.as(address)}
+                >
+                  <Button color={"green"} content={"Create New Request"} />
+                </Link>
+              )}
               {showStatus && (
                 <StatusIndicator
                   icon
