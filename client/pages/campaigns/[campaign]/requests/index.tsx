@@ -4,8 +4,9 @@ import { Container, Button } from "semantic-ui-react";
 import { getCampaignRequests } from "../../../../utils";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
-import { Layout } from "../../../../components";
+import { CustomTable, Layout } from "../../../../components";
 import RouteNames from "../../../../config/routes";
+import { requestColumns } from "../../../../config";
 
 interface IProps {
   requests: Array<any>;
@@ -45,6 +46,13 @@ class Requests extends Component<IProps, {}> {
                 className={styles.greyText}
                 style={{ marginTop: "-0.5rem" }}
               >{`<{ ${address} }>`}</h3>
+            </div>
+            <div style={{ marginTop: "4rem" }}>
+              {!!requests.length ? (
+                <CustomTable data={requests} columns={requestColumns} />
+              ) : (
+                <h2>There haven't been any requests created yet!</h2>
+              )}
             </div>
           </Container>
         </Layout>
