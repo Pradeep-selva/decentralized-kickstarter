@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Link from "next/link";
-import { Container, Button } from "semantic-ui-react";
+import { Container, Button, Icon } from "semantic-ui-react";
 import { getCampaignData, getCampaignRequests } from "../../../../utils";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
@@ -19,6 +19,7 @@ class Requests extends Component<IProps, {}> {
     const address = context.query.campaign;
     const requests = await getCampaignRequests(address);
     const { contributors } = await getCampaignData(address);
+
     return { requests, address, contributors };
   }
   render() {
@@ -57,7 +58,13 @@ class Requests extends Component<IProps, {}> {
                   extraData={{ contributors }}
                 />
               ) : (
-                <h2>There haven't been any requests created yet!</h2>
+                <div
+                  className={styles.centerContainer}
+                  style={{ marginTop: "25vh" }}
+                >
+                  <Icon name={"folder open outline"} size={"massive"} />
+                  <h2>There haven't been any requests created yet!</h2>
+                </div>
               )}
             </div>
           </Container>

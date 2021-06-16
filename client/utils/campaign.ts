@@ -49,18 +49,15 @@ export const getCampaignRequests = async (address: string) => {
   );
 
   const results = await Promise.all(payload);
-  const requests: Array<Request> = results.map(
-    ({ approvalCount, complete, description, recipient, value }) =>
-      parseInt(value) !== 0
-        ? {
-            approvalCount,
-            complete,
-            description,
-            recipient,
-            value
-          }
-        : null
-  );
+  const requests: Array<Request> = results
+    .filter(({ value }) => parseInt(value) !== 0)
+    .map(({ approvalCount, complete, description, recipient, value }) => ({
+      approvalCount,
+      complete,
+      description,
+      recipient,
+      value
+    }));
 
   return new Promise((resolve) => resolve(requests));
 };
