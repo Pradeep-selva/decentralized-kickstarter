@@ -30,3 +30,9 @@ export interface Request {
   approvalCount: number;
   complete: boolean;
 }
+
+export interface ProcessedRequest {
+  description: string;
+  value: number;
+  recipient: string;
+}

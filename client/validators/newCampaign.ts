@@ -22,10 +22,9 @@ export default ({
     errors["title"] = "Title can't be longer than 50 characters";
 
   if (contribution <= 0)
-    errors["minContribution"] = "Minimum contribution must be > 1 wei";
+    errors["minContribution"] = "Minimum contribution must be > 0 wei";
 
   const imageWithoutQuery = image.slice(0, image.indexOf("?"));
-  console.log(imageWithoutQuery);
 
   if (
     !!image.length &&
