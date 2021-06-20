@@ -15,7 +15,7 @@ import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { useValidateNewCampaign } from "../../validators";
 import { CampaignErrors, CampaignPayload } from "../../types/validators";
-import { Factory, web3 } from "../../instances";
+import { web3 } from "../../instances";
 import RouteNames from "../../config/routes";
 import { createCampaign } from "../../utils";
 
