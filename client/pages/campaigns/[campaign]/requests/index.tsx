@@ -11,7 +11,7 @@ import {
 import Head from "next/head";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
-import { CustomTable, Layout, StatusIndicator } from "../../../../components";
+import { CustomTable, StatusIndicator } from "../../../../components";
 import RouteNames from "../../../../config/routes";
 import { getRequestColumns } from "../../../../config";
 import { DataCell } from "../../../../types";
@@ -123,66 +123,64 @@ class Requests extends Component<IProps, IState> {
           />
         </Head>
         <main className={homeStyles.main}>
-          <Layout>
-            <Container>
-              <Link
-                href={RouteNames.campaignById.absolute}
-                as={RouteNames.campaignById.as(address)}
-              >
-                <Button
-                  icon={"arrow alternate circle left"}
-                  floated={"left"}
-                  size={"massive"}
-                  primary
-                  circular
+          <Container>
+            <Link
+              href={RouteNames.campaignById.absolute}
+              as={RouteNames.campaignById.as(address)}
+            >
+              <Button
+                icon={"arrow alternate circle left"}
+                floated={"left"}
+                size={"massive"}
+                primary
+                circular
+              />
+            </Link>
+            <div className={styles.centerContainer}>
+              <h1>
+                <u>Requests</u>
+              </h1>
+              <h3
+                className={styles.greyText}
+                style={{ marginTop: "-0.5rem" }}
+              >{`<{ ${address} }>`}</h3>
+            </div>
+            <div style={{ marginTop: "4rem" }}>
+              {user === manager && (
+                <Link
+                  href={RouteNames.newRequest.absolute}
+                  as={RouteNames.newRequest.as(address)}
+                >
+                  <Button color={"green"} content={"Create New Request"} />
+                </Link>
+              )}
+              {showStatus && (
+                <StatusIndicator
+                  icon
+                  status={
+                    loading
+                      ? "waiting"
+                      : !!failMessage.length
+                      ? "error"
+                      : "success"
+                  }
+                  error={failMessage}
+                  success={"Your campaign was successfully created!"}
                 />
-              </Link>
-              <div className={styles.centerContainer}>
-                <h1>
-                  <u>Requests</u>
-                </h1>
-                <h3
-                  className={styles.greyText}
-                  style={{ marginTop: "-0.5rem" }}
-                >{`<{ ${address} }>`}</h3>
-              </div>
-              <div style={{ marginTop: "4rem" }}>
-                {user === manager && (
-                  <Link
-                    href={RouteNames.newRequest.absolute}
-                    as={RouteNames.newRequest.as(address)}
-                  >
-                    <Button color={"green"} content={"Create New Request"} />
-                  </Link>
-                )}
-                {showStatus && (
-                  <StatusIndicator
-                    icon
-                    status={
-                      loading
-                        ? "waiting"
-                        : !!failMessage.length
-                        ? "error"
-                        : "success"
-                    }
-                    error={failMessage}
-                    success={"Your campaign was successfully created!"}
-                  />
-                )}
-                {!!requests.length ? (
-                  <CustomTable data={requests} columns={tableColumns} />
-                ) : (
-                  <div
-                    className={styles.centerContainer}
-                    style={{ marginTop: "25vh" }}
-                  >
-                    <Icon name={"folder open outline"} size={"massive"} />
-                    <h2>There haven't been any requests created yet!</h2>
-                  </div>
-                )}
-              </div>
-            </Container>
-          </Layout>
+              )}
+              {!!requests.length ? (
+                <CustomTable data={requests} columns={tableColumns} />
+              ) : (
+                <div
+                  className={styles.centerContainer}
+                  style={{ marginTop: "25vh" }}
+                >
+                  <Icon name={"folder open outline"} size={"massive"} />
+                  <h2>There haven't been any requests created yet!</h2>
+                </div>
+              )}
+            </div>
+          </Container>
         </main>
       </div>
     );

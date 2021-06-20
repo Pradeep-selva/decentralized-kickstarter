@@ -1,12 +1,14 @@
 import React from "react";
 import "../styles/globals.css";
 import "semantic-ui-css/semantic.min.css";
-import { GithubButton } from "../components";
+import { GithubButton, Layout } from "../components";
 
 const App = ({ Component, pageProps }) => {
   return (
     <React.Fragment>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
       <GithubButton />
     </React.Fragment>
   );

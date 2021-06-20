@@ -10,7 +10,7 @@ import {
 } from "semantic-ui-react";
 import Head from "next/head";
 import { NextRouter, withRouter } from "next/router";
-import { Layout, StatusIndicator } from "../../components";
+import { StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { useValidateNewCampaign } from "../../validators";
@@ -121,79 +121,77 @@ class NewCampaign extends Component<IProps, IState> {
           />
         </Head>
         <main className={homeStyles.main}>
-          <Layout>
-            <Container>
-              <h1 className={styles.heading}>
-                <Icon name={"ticket"} /> Create Campaign
-              </h1>
-              {showStatus && (
-                <StatusIndicator
-                  icon
-                  status={
-                    loading
-                      ? "waiting"
-                      : !!failMessage.length
-                      ? "error"
-                      : "success"
-                  }
-                  error={failMessage}
-                  success={"Your campaign was successfully created!"}
+          <Container>
+            <h1 className={styles.heading}>
+              <Icon name={"ticket"} /> Create Campaign
+            </h1>
+            {showStatus && (
+              <StatusIndicator
+                icon
+                status={
+                  loading
+                    ? "waiting"
+                    : !!failMessage.length
+                    ? "error"
+                    : "success"
+                }
+                error={failMessage}
+                success={"Your campaign was successfully created!"}
+              />
+            )}
+            <Form onSubmit={() => this.setState({ showConfirm: true })}>
+              <Form.Field>
+                <label>Minimum Contribution</label>
+                <Input
+                  label={"wei"}
+                  labelPosition={"right"}
+                  value={values.minContribution}
+                  type={"number"}
+                  name={"minContribution"}
+                  onChange={this.handleChange}
                 />
-              )}
-              <Form onSubmit={() => this.setState({ showConfirm: true })}>
-                <Form.Field>
-                  <label>Minimum Contribution</label>
-                  <Input
-                    label={"wei"}
-                    labelPosition={"right"}
-                    value={values.minContribution}
-                    type={"number"}
-                    name={"minContribution"}
-                    onChange={this.handleChange}
-                  />
-                  <p className={styles.error}>{errors?.minContribution}</p>
-                </Form.Field>
-                <Form.Field>
-                  <label>Title</label>
-                  <Input
-                    value={values.title}
-                    name={"title"}
-                    onChange={this.handleChange}
-                  />
-                  <p className={styles.error}>{errors?.title}</p>
-                </Form.Field>
-                <Form.Field>
-                  <label>Description</label>
-                  <TextArea
-                    value={values.description}
-                    name={"description"}
-                    maxLength={1000}
-                    rows={5}
-                    onChange={this.handleChange}
-                  />
-                  <p className={styles.error}>{errors?.description}</p>
-                </Form.Field>
-                <Form.Field>
-                  <label>Image Link</label>
-                  <Input
-                    value={values.image}
-                    name={"image"}
-                    onChange={this.handleChange}
-                  />
-                  <p className={styles.error}>{errors?.image}</p>
-                </Form.Field>
-                <Button
-                  loading={loading}
-                  disabled={loading}
-                  size={"huge"}
-                  color={"blue"}
-                  type={"submit"}
-                >
-                  Create
-                </Button>
-              </Form>
-            </Container>
-          </Layout>
+                <p className={styles.error}>{errors?.minContribution}</p>
+              </Form.Field>
+              <Form.Field>
+                <label>Title</label>
+                <Input
+                  value={values.title}
+                  name={"title"}
+                  onChange={this.handleChange}
+                />
+                <p className={styles.error}>{errors?.title}</p>
+              </Form.Field>
+              <Form.Field>
+                <label>Description</label>
+                <TextArea
+                  value={values.description}
+                  name={"description"}
+                  maxLength={1000}
+                  rows={5}
+                  onChange={this.handleChange}
+                />
+                <p className={styles.error}>{errors?.description}</p>
+              </Form.Field>
+              <Form.Field>
+                <label>Image Link</label>
+                <Input
+                  value={values.image}
+                  name={"image"}
+                  onChange={this.handleChange}
+                />
+                <p className={styles.error}>{errors?.image}</p>
+              </Form.Field>
+              <Button
+                loading={loading}
+                disabled={loading}
+                size={"huge"}
+                color={"blue"}
+                type={"submit"}
+              >
+                Create
+              </Button>
+            </Form>
+          </Container>
           <Confirm
             content={"Are you sure you want to create this campaign?"}
             open={showConfirm}

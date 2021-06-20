@@ -9,7 +9,8 @@ import {
   Confirm
 } from "semantic-ui-react";
 import styles from "../../../../styles/Pages.module.css";
-import { Layout, StatusIndicator } from "../../../../components";
+import homeStyles from "../../../../styles/Home.module.css";
+import { StatusIndicator } from "../../../../components";
 import { RequestErrors, RequestPayload } from "../../../../types";
 import { useValidateNewRequest } from "../../../../validators";
 import { web3 } from "../../../../instances";
@@ -127,69 +128,67 @@ class NewRequest extends Component<IProps, IState> {
             content={`Decentralized KickStarter - New request for campaign ${address}`}
           />
         </Head>
-        <main>
-          <Layout>
-            <Container>
-              <h1 className={styles.heading}>New Request</h1>
-              {showStatus && (
-                <StatusIndicator
-                  icon
-                  status={
-                    loading
-                      ? "waiting"
-                      : !!failMessage.length
-                      ? "error"
-                      : "success"
-                  }
-                  error={failMessage}
-                  success={"Your campaign was successfully created!"}
+        <main className={homeStyles.main}>
+          <Container>
+            <h1 className={styles.heading}>New Request</h1>
+            {showStatus && (
+              <StatusIndicator
+                icon
+                status={
+                  loading
+                    ? "waiting"
+                    : !!failMessage.length
+                    ? "error"
+                    : "success"
+                }
+                error={failMessage}
+                success={"Your campaign was successfully created!"}
+              />
+            )}
+            <Form onSubmit={() => this.setState({ showConfirm: true })}>
+              <Form.Field>
+                <label>Value to Transfer</label>
+                <Input
+                  label={"wei"}
+                  labelPosition={"right"}
+                  value={values.value}
+                  type={"number"}
+                  name={"value"}
+                  onChange={this.handleChange}
                 />
-              )}
-              <Form onSubmit={() => this.setState({ showConfirm: true })}>
-                <Form.Field>
-                  <label>Value to Transfer</label>
-                  <Input
-                    label={"wei"}
-                    labelPosition={"right"}
-                    value={values.value}
-                    type={"number"}
-                    name={"value"}
-                    onChange={this.handleChange}
-                  />
-                  <p className={styles.error}>{errors?.value}</p>
-                </Form.Field>
-                <Form.Field>
-                  <label>Description</label>
-                  <TextArea
-                    value={values.description}
-                    name={"description"}
-                    maxLength={1000}
-                    rows={5}
-                    onChange={this.handleChange}
-                  />
-                  <p className={styles.error}>{errors?.description}</p>
-                </Form.Field>
-                <Form.Field>
-                  <label>Recipient address</label>
-                  <Input
-                    value={values.recipient}
-                    name={"recipient"}
-                    onChange={this.handleChange}
-                  />
-                  <p className={styles.error}>{errors?.recipient}</p>
-                </Form.Field>
-                <Button
-                  loading={loading}
-                  disabled={loading}
-                  size={"huge"}
-                  color={"blue"}
-                  type={"submit"}
-                >
-                  Create
-                </Button>
-              </Form>
-            </Container>
-          </Layout>
+                <p className={styles.error}>{errors?.value}</p>
+              </Form.Field>
+              <Form.Field>
+                <label>Description</label>
+                <TextArea
+                  value={values.description}
+                  name={"description"}
+                  maxLength={1000}
+                  rows={5}
+                  onChange={this.handleChange}
+                />
+                <p className={styles.error}>{errors?.description}</p>
+              </Form.Field>
+              <Form.Field>
+                <label>Recipient address</label>
+                <Input
+                  value={values.recipient}
+                  name={"recipient"}
+                  onChange={this.handleChange}
+                />
+                <p className={styles.error}>{errors?.recipient}</p>
+              </Form.Field>
+              <Button
+                loading={loading}
+                disabled={loading}
+                size={"huge"}
+                color={"blue"}
+                type={"submit"}
+              >
+                Create
+              </Button>
+            </Form>
+          </Container>
           <Confirm
             content={"Are you sure you want to create this campaign?"}
             open={showConfirm}
