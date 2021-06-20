@@ -8,6 +8,7 @@ import {
   TextArea,
   Confirm
 } from "semantic-ui-react";
+import Link from "next/link";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
 import { StatusIndicator } from "../../../../components";
@@ -130,6 +131,18 @@ class NewRequest extends Component<IProps, IState> {
         </Head>
         <main className={homeStyles.main}>
           <Container>
+            <Link
+              href={RouteNames.requestsByCampaign.absolute}
+              as={RouteNames.requestsByCampaign.as(address)}
+            >
+              <Button
+                icon={"arrow alternate circle left"}
+                floated={"left"}
+                size={"massive"}
+                primary
+                circular
+              />
+            </Link>
             <h1 className={styles.heading}>New Request</h1>
             {showStatus && (
               <StatusIndicator
