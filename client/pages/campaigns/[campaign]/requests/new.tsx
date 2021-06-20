@@ -1,11 +1,21 @@
 import React, { Component } from "react";
 import Head from "next/head";
-import { Container, Form, Input, Button, TextArea } from "semantic-ui-react";
+import {
+  Container,
+  Form,
+  Input,
+  Button,
+  TextArea,
+  Confirm
+} from "semantic-ui-react";
 import styles from "../../../../styles/Pages.module.css";
 import { Layout, StatusIndicator } from "../../../../components";
 import { RequestErrors, RequestPayload } from "../../../../types";
 import { useValidateNewRequest } from "../../../../validators";
 import { web3 } from "../../../../instances";
+import { createRequest } from "../../../../utils";
+import { NextRouter, withRouter } from "next/router";
+import { RouteNames } from "../../../../config";
 
 type IState = {
   errors: RequestErrors | null;
@@ -24,6 +34,7 @@ const defaultValues: RequestPayload = {
 
 interface IProps {
   address: string;
+  router: NextRouter;
 }
 
 class NewRequest extends Component<IProps, IState> {
@@ -60,13 +71,52 @@ class NewRequest extends Component<IProps, IState> {
       }
     }));
 
+  handleSubmit = async () => {
+    const { values } = this.state;
+    const [payload, errors] = useValidateNewRequest(values);
+
+    if (!!errors) this.setState({ errors });
+    else {
+      this.toggleLoading();
+      this.setState({ showStatus: true });
+
+      const accounts = await web3.eth.getAccounts();
+      const err = await createRequest(this.props.address, accounts[0], payload);
+
+      if (err) {
+        this.setState({
+          failMessage: !!accounts.length
+            ? err.message
+            : "Transaction failed! Make sure you have metamask installed to make a transaction.",
+          errors: null
+        });
+      } else {
+        this.setState({
+          values: { ...defaultValues },
+          errors: null,
+          failMessage: ""
+        });
+      }
+
+      this.toggleLoading();
+      setTimeout(() => {
+        this.setState({ showStatus: false });
+        !this.state.failMessage.length &&
+          this.props.router.push(
+            RouteNames.requestsByCampaign.as(this.props.address)
+          );
+      }, 5000);
+    }
+  };
+
   toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
 
   closeDialog = () => this.setState(() => ({ showConfirm: false }));
 
   render() {
     const { address } = this.props;
-    const { errors, failMessage, loading, showStatus, values } = this.state;
+    const { errors, failMessage, loading, showStatus, values, showConfirm } =
+      this.state;
 
     return (
       <div>
@@ -103,7 +153,7 @@ class NewRequest extends Component<IProps, IState> {
                     labelPosition={"right"}
                     value={values.value}
                     type={"number"}
-                    name={"minContribution"}
+                    name={"value"}
                     onChange={this.handleChange}
                   />
                   <p className={styles.error}>{errors?.value}</p>
@@ -123,7 +173,7 @@ class NewRequest extends Component<IProps, IState> {
                   <label>Recipient address</label>
                   <Input
                     value={values.recipient}
-                    name={"image"}
+                    name={"recipient"}
                     onChange={this.handleChange}
                   />
                   <p className={styles.error}>{errors?.recipient}</p>
@@ -140,10 +190,19 @@ class NewRequest extends Component<IProps, IState> {
               </Form>
             </Container>
           </Layout>
+          <Confirm
+            content={"Are you sure you want to create this campaign?"}
+            open={showConfirm}
+            onCancel={this.closeDialog}
+            onConfirm={() => {
+              this.closeDialog();
+              this.handleSubmit();
+            }}
+          />
         </main>
       </div>
     );
   }
 }
 
-export default NewRequest;
+export default withRouter(NewRequest);

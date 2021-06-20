@@ -1,5 +1,5 @@
 import { Campaign, web3 } from "../instances";
-import { CampaignSummary, Request } from "../types";
+import { CampaignSummary, ProcessedRequest, Request } from "../types";
 
 export const getCampaignData = async (
   address: string
@@ -101,9 +101,7 @@ export const finalizeRequest = async (
 export const createRequest = async (
   address: string,
   user: string,
-  description: string,
-  recipient: string,
-  value: number
+  { description, recipient, value }: ProcessedRequest
 ): Promise<any> => {
   const campaign = Campaign(address);
 

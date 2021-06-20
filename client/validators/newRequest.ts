@@ -21,7 +21,7 @@ export default ({
   if (description.length <= 0)
     errors["description"] = "Description cannot be empty";
 
-  if (web3.utils.checkAddressChecksum(recipient))
+  if (!web3.utils.checkAddressChecksum(recipient))
     errors["recipient"] = "Please enter a valid recipient address";
 
   if (!!Object.keys(errors).length) return [null, errors];
