@@ -6,6 +6,12 @@
   cursor: pointer;
 }
 
+.github {
+  position: absolute !important;
+  bottom: 2vh;
+  right: 4vh;
+}
+
 @media only screen and (max-width: 768px) {
   .menuAdd {
     visibility: hidden;

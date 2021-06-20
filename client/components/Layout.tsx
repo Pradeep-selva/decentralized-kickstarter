@@ -15,8 +15,8 @@ const Layout = ({ children }) => {
         </Menu.Item>
         <Menu.Item position={"right"} className={styles.menuAdd}>
           <Button icon color={"green"} labelPosition={"right"}>
-            <Link href={routes.newCampaign}>New Campaign</Link>
             <Icon name={"plus"} />
+            <Link href={routes.newCampaign}>New Campaign</Link>
           </Button>
         </Menu.Item>
       </Menu>
