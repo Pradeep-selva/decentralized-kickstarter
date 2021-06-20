@@ -97,3 +97,23 @@ export const finalizeRequest = async (
     return new Promise((resolve) => resolve(err));
   }
 };
+
+export const createRequest = async (
+  address: string,
+  user: string,
+  description: string,
+  recipient: string,
+  value: number
+): Promise<any> => {
+  const campaign = Campaign(address);
+
+  try {
+    await campaign.methods.createRequest(description, recipient, value)?.send({
+      from: user
+    });
+
+    return new Promise((resolve) => resolve(false));
+  } catch (err) {
+    return new Promise((resolve) => resolve(err));
+  }
+};

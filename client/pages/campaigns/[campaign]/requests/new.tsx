@@ -4,6 +4,8 @@ import { Container, Form, Input, Button, TextArea } from "semantic-ui-react";
 import styles from "../../../../styles/Pages.module.css";
 import { Layout, StatusIndicator } from "../../../../components";
 import { RequestErrors, RequestPayload } from "../../../../types";
+import { useValidateNewRequest } from "../../../../validators";
+import { web3 } from "../../../../instances";
 
 type IState = {
   errors: RequestErrors | null;
@@ -57,6 +59,10 @@ class NewRequest extends Component<IProps, IState> {
         [event.target.name]: event.target.value
       }
     }));
+
+  toggleLoading = () => this.setState((state) => ({ loading: !state.loading }));
+
+  closeDialog = () => this.setState(() => ({ showConfirm: false }));
 
   render() {
     const { address } = this.props;
