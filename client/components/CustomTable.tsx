@@ -21,7 +21,7 @@ const CustomTable = ({ columns, data, extraData = {} }: IProps) => {
 
       <Table.Body>
         {data.map((row, index) => (
-          <Table.Row>
+          <Table.Row key={index}>
             {columns.map(({ key, render }, _index) => (
               <Table.Cell key={`${index}${_index}`}>
                 {!!render ? render({ row, extraData, index }) : row[key]}

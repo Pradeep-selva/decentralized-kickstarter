@@ -44,11 +44,12 @@ export const getCampaignRequests = async (address: string) => {
   const campaign = Campaign(address);
 
   const numRequests = await campaign.methods.getRequestCount()?.call();
-  const payload = Array(numRequests).map(
+  const payload = Array.from({ length: numRequests }).map(
     async (_, index) => await campaign.methods.requests(index)?.call()
   );
 
   const results = await Promise.all(payload);
+
   const requests: Array<Request> = results
     .filter(({ value }) => parseInt(value) !== 0)
     .map(({ approvalCount, complete, description, recipient, value }) => ({
