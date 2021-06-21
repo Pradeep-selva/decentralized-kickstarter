@@ -74,7 +74,7 @@ class NewCampaign extends Component<IProps, IState> {
     if (!!errors) this.setState({ errors });
     else {
       this.toggleLoading();
-      this.setState({ showStatus: true });
+      this.setState({ showStatus: true, errors: {} });
 
       const accounts = await web3.eth.getAccounts();
       const err = await createCampaign(payload, accounts[0]);

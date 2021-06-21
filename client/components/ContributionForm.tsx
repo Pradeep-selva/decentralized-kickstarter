@@ -45,7 +45,7 @@ class ContributionForm extends Component<IProps, IState> {
     if (!!error) this.setState({ error });
     else {
       this.toggleLoading();
-      this.setState({ showStatus: true });
+      this.setState({ showStatus: true, error: null });
 
       const accounts = await web3.eth.getAccounts();
       const err = await makeContribution(

@@ -7,7 +7,7 @@
 }
 
 .github {
-  position: absolute !important;
+  position: fixed !important;
   bottom: 2vh;
   right: 4vh;
 }

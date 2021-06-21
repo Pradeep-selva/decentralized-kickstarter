@@ -80,7 +80,7 @@ class NewRequest extends Component<IProps, IState> {
     if (!!errors) this.setState({ errors });
     else {
       this.toggleLoading();
-      this.setState({ showStatus: true });
+      this.setState({ showStatus: true, errors: {} });
 
       const accounts = await web3.eth.getAccounts();
       const err = await createRequest(this.props.address, accounts[0], payload);
