@@ -14,20 +14,11 @@ import { StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
 import { useValidateCampaign } from "../../validators";
-import { CampaignErrors, CampaignPayload } from "../../types/validators";
+import { CampaignPayload } from "../../types/validators";
 import { web3 } from "../../instances";
 import RouteNames from "../../config/routes";
 import { createCampaign } from "../../utils";
-import { RouterProp } from "../../types";
-
-type IState = {
-  errors: CampaignErrors | null;
-  loading: boolean;
-  showConfirm: boolean;
-  showStatus: boolean;
-  values: CampaignPayload;
-  failMessage: string;
-};
+import { NewCampaignState, RouterProp } from "../../types";
 
 const defaultValues: CampaignPayload = {
   description: "",
@@ -36,7 +27,7 @@ const defaultValues: CampaignPayload = {
   image: ""
 };
 
-class NewCampaign extends Component<RouterProp, IState> {
+class NewCampaign extends Component<RouterProp, NewCampaignState> {
   constructor(props) {
     super(props);
 

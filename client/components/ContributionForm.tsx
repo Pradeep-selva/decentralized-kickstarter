@@ -5,18 +5,9 @@ import styles from "../styles/Pages.module.css";
 import { useValidateContribution } from "../validators";
 import { web3 } from "../instances";
 import { makeContribution } from "../utils";
-import { ContributeProps } from "../types";
+import { ContributeProps, ContributeState } from "../types";
 
-type IState = {
-  error: string | null;
-  loading: boolean;
-  showConfirm: boolean;
-  showStatus: boolean;
-  contribution: string;
-  failMessage: string;
-};
-
-class ContributionForm extends Component<ContributeProps, IState> {
+class ContributionForm extends Component<ContributeProps, ContributeState> {
   constructor(props) {
     super(props);
 

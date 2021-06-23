@@ -13,17 +13,11 @@ import { ContributionForm } from "../../../components";
 import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
 import { web3 } from "../../../instances";
-import { CampaignSummary, CampaignDetailProps } from "../../../types";
+import { CampaignDetailProps, ViewCampaignState } from "../../../types";
 import { getCampaignData } from "../../../utils";
 import RouteNames from "../../../config/routes";
 
-interface IState {
-  summary: CampaignSummary;
-  address: string;
-  isManager: boolean;
-}
-
-class ViewCampaign extends Component<CampaignDetailProps, IState> {
+class ViewCampaign extends Component<CampaignDetailProps, ViewCampaignState> {
   constructor(props: CampaignDetailProps) {
     super(props);
 

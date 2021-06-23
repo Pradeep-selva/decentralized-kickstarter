@@ -12,12 +12,7 @@ const GithubButton = () => {
       secondary
       labelPosition={"left"}
       className={styles.github}
-      onClick={() =>
-        window.open(
-          "https://github.com/Pradeep-selva/decentralized-kickstarter",
-          "_blank"
-        )
-      }
+      onClick={() => window.open(GITHUB_URL, "_blank")}
     >
       <Icon name={"github"} />
       contribute

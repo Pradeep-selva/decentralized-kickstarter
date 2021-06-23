@@ -14,24 +14,18 @@ import { StatusIndicator } from "../../../components";
 import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
 import { useValidateCampaign } from "../../../validators";
-import { CampaignErrors, CampaignPayload } from "../../../types/validators";
 import { web3 } from "../../../instances";
 import RouteNames from "../../../config/routes";
 import { getCampaignData, updateCampaign } from "../../../utils";
-import { CampaignDetailProps, RouterProp } from "../../../types";
-
-type IState = {
-  errors: CampaignErrors | null;
-  loading: boolean;
-  showConfirm: boolean;
-  showStatus: boolean;
-  values: CampaignPayload;
-  failMessage: string;
-};
+import {
+  CampaignDetailProps,
+  NewCampaignState,
+  RouterProp
+} from "../../../types";
 
 type IProps = RouterProp & CampaignDetailProps;
 
-class EditCampaign extends Component<IProps, IState> {
+class EditCampaign extends Component<IProps, NewCampaignState> {
   constructor(props: IProps) {
     super(props);
 

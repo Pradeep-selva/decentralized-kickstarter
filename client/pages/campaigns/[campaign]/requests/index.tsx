@@ -15,18 +15,10 @@ import homeStyles from "../../../../styles/Home.module.css";
 import { CustomTable, StatusIndicator } from "../../../../components";
 import RouteNames from "../../../../config/routes";
 import { getRequestColumns } from "../../../../config";
-import { DataCell, RequestProps } from "../../../../types";
+import { DataCell, RequestProps, ViewRequestsState } from "../../../../types";
 import { web3 } from "../../../../instances";
 
-interface IState {
-  user: string;
-  tableColumns: Array<DataCell>;
-  showStatus: boolean;
-  loading: boolean;
-  failMessage: string;
-}
-
-class Requests extends Component<RequestProps, IState> {
+class Requests extends Component<RequestProps, ViewRequestsState> {
   constructor(props) {
     super(props);
 
