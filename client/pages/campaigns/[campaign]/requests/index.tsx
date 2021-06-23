@@ -46,7 +46,7 @@ class Requests extends Component<RequestProps, ViewRequestsState> {
 
     const isContributor = await checkContributor(address, user);
 
-    const tableColumns = await getRequestColumns({
+    const tableColumns = getRequestColumns({
       contributors,
       manager,
       user,

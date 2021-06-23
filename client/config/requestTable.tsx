@@ -2,13 +2,13 @@ import React from "react";
 import { Button } from "semantic-ui-react";
 import { DataCell } from "../types";
 
-export const getRequestColumns = async ({
+export const getRequestColumns = ({
   manager,
   contributors,
   user,
   functions,
   isContributor
-}): Promise<Array<DataCell>> => {
+}) => {
   let requestColumns: Array<DataCell> = [
     {
       key: "value",
@@ -75,5 +75,5 @@ export const getRequestColumns = async ({
       }
     });
 
-  return new Promise((resolve) => resolve(requestColumns));
+  return requestColumns;
 };
