@@ -13,11 +13,11 @@ import { NextRouter, withRouter } from "next/router";
 import { StatusIndicator } from "../../../components";
 import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
-import { useValidateNewCampaign } from "../../../validators";
+import { useValidateCampaign } from "../../../validators";
 import { CampaignErrors, CampaignPayload } from "../../../types/validators";
 import { web3 } from "../../../instances";
 import RouteNames from "../../../config/routes";
-import { createCampaign, getCampaignData } from "../../../utils";
+import { editCampaign, getCampaignData, updateMeta } from "../../../utils";
 import { CampaignSummary } from "../../../types";
 
 type IState = {
@@ -89,7 +89,7 @@ class EditCampaign extends Component<IProps, IState> {
 
   handleSubmit = async () => {
     const { values } = this.state;
-    const [payload, errors] = useValidateNewCampaign(values);
+    const [payload, errors] = useValidateCampaign(values, true);
 
     if (!!errors) this.setState({ errors });
     else {
@@ -97,7 +97,10 @@ class EditCampaign extends Component<IProps, IState> {
       this.setState({ showStatus: true, errors: {} });
 
       const accounts = await web3.eth.getAccounts();
-      const err = await createCampaign(payload, accounts[0]);
+      const cerr = await editCampaign(payload, accounts[0], this.props.address);
+      const ferr = await updateMeta(payload, accounts[0], 0);
+
+      const err = cerr ? cerr : ferr ? ferr : false;
 
       if (err) {
         this.setState({
@@ -167,10 +170,8 @@ class EditCampaign extends Component<IProps, IState> {
                   labelPosition={"right"}
                   value={values.minContribution}
                   type={"number"}
-                  name={"minContribution"}
-                  onChange={this.handleChange}
+                  disabled
                 />
-                <p className={styles.error}>{errors?.minContribution}</p>
               </Form.Field>
               <Form.Field>
                 <label>Title</label>
@@ -208,12 +209,14 @@ class EditCampaign extends Component<IProps, IState> {
                 color={"blue"}
                 type={"submit"}
               >
-                Create
+                Edit
               </Button>
             </Form>
           </Container>
           <Confirm
-            content={"Are you sure you want to update this campaign?"}
+            content={
+              "Are you sure you want to update this campaign? Please confirm both transactions after accepting."
+            }
             open={showConfirm}
             onCancel={this.closeDialog}
             onConfirm={() => {

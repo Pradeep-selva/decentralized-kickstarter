@@ -13,7 +13,7 @@ import { NextRouter, withRouter } from "next/router";
 import { StatusIndicator } from "../../components";
 import styles from "../../styles/Pages.module.css";
 import homeStyles from "../../styles/Home.module.css";
-import { useValidateNewCampaign } from "../../validators";
+import { useValidateCampaign } from "../../validators";
 import { CampaignErrors, CampaignPayload } from "../../types/validators";
 import { web3 } from "../../instances";
 import RouteNames from "../../config/routes";
@@ -69,7 +69,7 @@ class NewCampaign extends Component<IProps, IState> {
 
   handleSubmit = async () => {
     const { values } = this.state;
-    const [payload, errors] = useValidateNewCampaign(values);
+    const [payload, errors] = useValidateCampaign(values);
 
     if (!!errors) this.setState({ errors });
     else {

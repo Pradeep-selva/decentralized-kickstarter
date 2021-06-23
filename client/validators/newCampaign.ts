@@ -1,12 +1,10 @@
 import { ProcessedCampaign } from "../types";
 import { CampaignErrors, CampaignPayload } from "../types/validators";
 
-export default ({
-  description,
-  minContribution,
-  title,
-  image
-}: CampaignPayload): [ProcessedCampaign | null, CampaignErrors | null] => {
+export default (
+  { description, minContribution, title, image }: CampaignPayload,
+  isEdit = false
+): [ProcessedCampaign | null, CampaignErrors | null] => {
   let errors = {};
   const contribution = parseInt(minContribution);
 
@@ -34,6 +32,11 @@ export default ({
       ))
   )
     errors["image"] = "This is not a valid image URL";
+
+  if (isEdit) {
+    delete errors["minContribution"];
+    delete payload["minContribution"];
+  }
 
   if (!!Object.keys(errors).length) return [null, errors];
   else return [payload, null];
