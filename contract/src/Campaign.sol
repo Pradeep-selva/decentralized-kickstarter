@@ -62,12 +62,10 @@ contract Campaign {
     }
 
     function editCampaign(
-        uint256 minimum, 
         string memory _title, 
         string memory _description, 
         string memory _image
     ) public owner {
-        minContribution = minimum;
         title = _title;
         description = _description;
         image = _image;
