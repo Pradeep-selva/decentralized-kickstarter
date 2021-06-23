@@ -1,15 +1,13 @@
 import React from "react";
-import { Status } from "../types";
 import { Icon, Message } from "semantic-ui-react";
+import { StatusIndicatorProps } from "../types";
 
-interface IProps {
-  status: Status;
-  success: string;
-  error: string;
-  icon?: boolean;
-}
-
-const StatusIndicator = ({ status, error, success, icon = false }: IProps) => {
+const StatusIndicator = ({
+  status,
+  error,
+  success,
+  icon = false
+}: StatusIndicatorProps) => {
   let iconName, title, body, color;
 
   switch (status) {

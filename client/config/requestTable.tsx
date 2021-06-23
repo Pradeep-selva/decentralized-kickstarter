@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "semantic-ui-react";
-import { web3 } from "../instances";
 import { DataCell } from "../types";
 
 export const getRequestColumns = async ({

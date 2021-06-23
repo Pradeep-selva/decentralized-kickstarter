@@ -3,8 +3,9 @@ import { Form, Button, Confirm, Input } from "semantic-ui-react";
 import { StatusIndicator } from "../components";
 import styles from "../styles/Pages.module.css";
 import { useValidateContribution } from "../validators";
-import { Campaign, web3 } from "../instances";
+import { web3 } from "../instances";
 import { makeContribution } from "../utils";
+import { ContributeProps } from "../types";
 
 type IState = {
   error: string | null;
@@ -15,13 +16,7 @@ type IState = {
   failMessage: string;
 };
 
-interface IProps {
-  minContribution: string;
-  address: string;
-  callback: Function;
-}
-
-class ContributionForm extends Component<IProps, IState> {
+class ContributionForm extends Component<ContributeProps, IState> {
   constructor(props) {
     super(props);
 

@@ -3,17 +3,12 @@ import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { Button, Card, Grid } from "semantic-ui-react";
-import { Campaign } from "../types";
 import { CampaignCard } from "../components";
 import RouteNames from "../config/routes";
 import { getAllCampaigns } from "../utils";
+import { HomeProps } from "../types";
 
-interface IProps {
-  campaigns: Array<Campaign>;
-  error: string;
-}
-
-class Home extends React.Component<IProps, any> {
+class Home extends React.Component<HomeProps, {}> {
   static async getInitialProps() {
     const [campaigns, error] = await getAllCampaigns();
     return { campaigns, error };

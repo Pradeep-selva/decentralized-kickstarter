@@ -9,7 +9,7 @@ import {
   Icon
 } from "semantic-ui-react";
 import Head from "next/head";
-import { NextRouter, withRouter } from "next/router";
+import { withRouter } from "next/router";
 import { StatusIndicator } from "../../../components";
 import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
@@ -18,7 +18,7 @@ import { CampaignErrors, CampaignPayload } from "../../../types/validators";
 import { web3 } from "../../../instances";
 import RouteNames from "../../../config/routes";
 import { getCampaignData, updateCampaign } from "../../../utils";
-import { CampaignSummary } from "../../../types";
+import { CampaignDetailProps, RouterProp } from "../../../types";
 
 type IState = {
   errors: CampaignErrors | null;
@@ -29,11 +29,7 @@ type IState = {
   failMessage: string;
 };
 
-interface IProps {
-  router: NextRouter;
-  summary: CampaignSummary;
-  address: string;
-}
+type IProps = RouterProp & CampaignDetailProps;
 
 class EditCampaign extends Component<IProps, IState> {
   constructor(props: IProps) {

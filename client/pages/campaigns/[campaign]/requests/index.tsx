@@ -15,15 +15,8 @@ import homeStyles from "../../../../styles/Home.module.css";
 import { CustomTable, StatusIndicator } from "../../../../components";
 import RouteNames from "../../../../config/routes";
 import { getRequestColumns } from "../../../../config";
-import { DataCell } from "../../../../types";
+import { DataCell, RequestProps } from "../../../../types";
 import { web3 } from "../../../../instances";
-
-interface IProps {
-  requests: Array<any>;
-  address: string;
-  contributors: string;
-  manager: string;
-}
 
 interface IState {
   user: string;
@@ -33,7 +26,7 @@ interface IState {
   failMessage: string;
 }
 
-class Requests extends Component<IProps, IState> {
+class Requests extends Component<RequestProps, IState> {
   constructor(props) {
     super(props);
 

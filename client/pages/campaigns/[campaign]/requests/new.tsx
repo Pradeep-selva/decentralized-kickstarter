@@ -12,11 +12,11 @@ import Link from "next/link";
 import styles from "../../../../styles/Pages.module.css";
 import homeStyles from "../../../../styles/Home.module.css";
 import { StatusIndicator } from "../../../../components";
-import { RequestErrors, RequestPayload } from "../../../../types";
+import { RequestErrors, RequestPayload, RouterProp } from "../../../../types";
 import { useValidateNewRequest } from "../../../../validators";
 import { web3 } from "../../../../instances";
 import { createRequest } from "../../../../utils";
-import { NextRouter, withRouter } from "next/router";
+import { withRouter } from "next/router";
 import { RouteNames } from "../../../../config";
 
 type IState = {
@@ -34,10 +34,7 @@ const defaultValues: RequestPayload = {
   value: ""
 };
 
-interface IProps {
-  address: string;
-  router: NextRouter;
-}
+type IProps = RouterProp & { address: string };
 
 class NewRequest extends Component<IProps, IState> {
   constructor(props) {

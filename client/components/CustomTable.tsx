@@ -1,14 +1,8 @@
 import React from "react";
 import { Table } from "semantic-ui-react";
-import { DataCell } from "../types";
+import { TableProps } from "../types";
 
-interface IProps {
-  columns: Array<DataCell>;
-  data: Array<any>;
-  extraData?: any;
-}
-
-const CustomTable = ({ columns, data, extraData = {} }: IProps) => {
+const CustomTable = ({ columns, data, extraData = {} }: TableProps) => {
   return (
     <Table celled>
       <Table.Header>

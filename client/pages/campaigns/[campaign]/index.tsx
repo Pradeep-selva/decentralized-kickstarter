@@ -5,8 +5,7 @@ import {
   Card,
   Grid,
   Divider,
-  Button,
-  Icon
+  Button
 } from "semantic-ui-react";
 import Link from "next/link";
 import Head from "next/head";
@@ -14,14 +13,9 @@ import { ContributionForm } from "../../../components";
 import styles from "../../../styles/Pages.module.css";
 import homeStyles from "../../../styles/Home.module.css";
 import { web3 } from "../../../instances";
-import { CampaignSummary } from "../../../types";
+import { CampaignSummary, CampaignDetailProps } from "../../../types";
 import { getCampaignData } from "../../../utils";
 import RouteNames from "../../../config/routes";
-
-interface IProps {
-  summary: CampaignSummary;
-  address: string;
-}
 
 interface IState {
   summary: CampaignSummary;
@@ -29,8 +23,8 @@ interface IState {
   isManager: boolean;
 }
 
-class ViewCampaign extends Component<IProps, IState> {
-  constructor(props: IProps) {
+class ViewCampaign extends Component<CampaignDetailProps, IState> {
+  constructor(props: CampaignDetailProps) {
     super(props);
 
     this.state = {
