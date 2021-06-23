@@ -13,13 +13,15 @@ contract Campaign {
     uint256 numRequests;
     mapping(address => bool) approvers;
     uint256 public approversCount;
+    uint256 cindex;
     
     constructor(
         uint256 minimum, 
         string memory _title, 
         string memory desc, 
         string memory _image, 
-        address sender
+        address sender,
+        uint256 _index
     ) {
         minContribution = minimum;
         title = _title;
@@ -28,12 +30,14 @@ contract Campaign {
         approversCount = 0;
         numRequests = 0;
         manager = sender;
+        cindex = _index;
     }
     
     function getSummary() public view returns (
         uint256, uint256, uint256, uint256, 
         string memory, string memory, string memory, 
-        address
+        address,
+        uint256
     ) {
         return (
             minContribution,
@@ -43,7 +47,8 @@ contract Campaign {
             title,
             description,
             image,
-            manager
+            manager,
+            cindex
         );
     }
 
