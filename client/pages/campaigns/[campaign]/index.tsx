@@ -26,6 +26,7 @@ interface IProps {
 interface IState {
   summary: CampaignSummary;
   address: string;
+  isManager: boolean;
 }
 
 class ViewCampaign extends Component<IProps, IState> {
@@ -34,7 +35,8 @@ class ViewCampaign extends Component<IProps, IState> {
 
     this.state = {
       summary: props.summary,
-      address: props.address
+      address: props.address,
+      isManager: false
     };
   }
 
@@ -43,6 +45,14 @@ class ViewCampaign extends Component<IProps, IState> {
     const summary = await getCampaignData(address);
 
     return { summary, address };
+  }
+
+  async componentDidMount() {
+    const accounts = await web3.eth.getAccounts();
+
+    this.setState({
+      isManager: accounts[0] === this.props.summary.manager
+    });
   }
 
   renderCards = () => {
@@ -110,7 +120,8 @@ class ViewCampaign extends Component<IProps, IState> {
   render() {
     const {
       summary: { title, description, image, minContribution },
-      address
+      address,
+      isManager
     } = this.state;
 
     return (
@@ -145,6 +156,20 @@ class ViewCampaign extends Component<IProps, IState> {
                         View Requests
                       </Link>
                     </Button>
+                    {isManager && (
+                      <Button
+                        size={"huge"}
+                        primary
+                        className={styles.marginTop}
+                      >
+                        <Link
+                          href={RouteNames.editCampaign.absolute}
+                          as={RouteNames.editCampaign.as(address)}
+                        >
+                          Edit Campaign
+                        </Link>
+                      </Button>
+                    )}
                   </Grid>
                   <Divider horizontal className={styles.margin}>
                     .

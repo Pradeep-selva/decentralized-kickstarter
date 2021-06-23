@@ -51,7 +51,6 @@ export const updateCampaign = async (
 
     return new Promise((resolve) => resolve(false));
   } catch (err) {
-    console.log(err);
     return new Promise((resolve) => resolve(err));
   }
 };

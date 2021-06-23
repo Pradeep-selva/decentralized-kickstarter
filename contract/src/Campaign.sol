@@ -71,7 +71,7 @@ contract Campaign {
         string memory _description, 
         string memory _image,
         address sender
-    ) public owner {
+    ) public {
         require(sender == manager);
         
         title = _title;

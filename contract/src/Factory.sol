@@ -21,7 +21,7 @@ contract Factory {
             description,
             image,
             msg.sender,
-            deployedContracts.length + 1
+            deployedContracts.length
         );
         
         deployedContracts.push(newCampaign);

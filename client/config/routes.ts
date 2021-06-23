@@ -12,5 +12,9 @@ export default {
   newRequest: {
     absolute: "/campaigns/[campaign]/requests/new",
     as: (id: string) => `/campaigns/${id}/requests/new`
+  },
+  editCampaign: {
+    absolute: "/campaigns/[campaign]/edit",
+    as: (id: string) => `/campaigns/${id}/edit`
   }
 };
