@@ -21,6 +21,21 @@ export const getCampaignData = async (
   return new Promise((resolve) => resolve(summary));
 };
 
+export const checkContributor = async (
+  address: string,
+  user: string
+): Promise<boolean> => {
+  const campaign = Campaign(address);
+
+  try {
+    const response = await campaign.methods.isContributor(user)?.call();
+
+    return new Promise((resolve) => resolve(Boolean(response)));
+  } catch (_) {
+    return new Promise((resolve) => resolve(false));
+  }
+};
+
 export const makeContribution = async (
   address: string,
   account: string,

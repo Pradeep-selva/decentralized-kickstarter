@@ -7,7 +7,8 @@ export const getRequestColumns = async ({
   manager,
   contributors,
   user,
-  functions
+  functions,
+  isContributor
 }): Promise<Array<DataCell>> => {
   let requestColumns: Array<DataCell> = [
     {
@@ -34,47 +35,46 @@ export const getRequestColumns = async ({
     }
   ];
 
-  requestColumns = [
-    ...requestColumns,
-    user === manager
-      ? {
-          key: "finalize",
-          title: "Finalize Request",
-          render: ({ row: { complete, approvalCount }, index }) => {
-            const invalid =
-              Boolean(complete) ||
-              approvalCount < contributors / 2 ||
-              contributors === "0";
+  if (user === manager)
+    requestColumns.push({
+      key: "finalize",
+      title: "Finalize Request",
+      render: ({ row: { complete, approvalCount }, index }) => {
+        const invalid =
+          Boolean(complete) ||
+          approvalCount < contributors / 2 ||
+          contributors === "0";
 
-            return (
-              <Button
-                onClick={() => functions.handleAction(index, "finalize")}
-                disabled={invalid}
-                primary
-                fluid
-                icon={invalid ? "dont" : "check square"}
-              />
-            );
-          }
-        }
-      : {
-          key: "approve",
-          title: "Approve Request",
-          render: ({ row: { complete }, index }) => {
-            const closed = Boolean(complete);
+        return (
+          <Button
+            onClick={() => functions.handleAction(index, "finalize")}
+            disabled={invalid}
+            primary
+            fluid
+            icon={invalid ? "dont" : "check square"}
+          />
+        );
+      }
+    });
 
-            return (
-              <Button
-                onClick={() => functions.handleAction(index, "approve")}
-                disabled={closed}
-                color={"green"}
-                fluid
-                icon={closed ? "dont" : "check square"}
-              />
-            );
-          }
-        }
-  ];
+  if (isContributor)
+    requestColumns.push({
+      key: "approve",
+      title: "Approve Request",
+      render: ({ row: { complete }, index }) => {
+        const closed = Boolean(complete);
+
+        return (
+          <Button
+            onClick={() => functions.handleAction(index, "approve")}
+            disabled={closed}
+            color={"green"}
+            fluid
+            icon={closed ? "dont" : "check square"}
+          />
+        );
+      }
+    });
 
   return new Promise((resolve) => resolve(requestColumns));
 };

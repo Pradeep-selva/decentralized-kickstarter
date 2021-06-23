@@ -4,6 +4,7 @@ import Router from "next/router";
 import { Container, Button, Icon } from "semantic-ui-react";
 import {
   approveRequest,
+  checkContributor,
   finalizeRequest,
   getCampaignData,
   getCampaignRequests
@@ -54,13 +55,17 @@ class Requests extends Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { contributors, manager } = this.props;
+    const { contributors, manager, address } = this.props;
     const accounts = await web3.eth.getAccounts();
+    const user = accounts[0];
+
+    const isContributor = await checkContributor(address, user);
 
     const tableColumns = await getRequestColumns({
       contributors,
       manager,
-      user: accounts[0],
+      user,
+      isContributor,
       functions: {
         handleAction: this.handleAction
       }
