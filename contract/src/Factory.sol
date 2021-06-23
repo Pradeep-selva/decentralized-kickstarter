@@ -43,12 +43,19 @@ contract Factory {
         );
     }
 
-    function updateFactoryMeta(
+    function updateCampaign(
         string memory title, 
         string memory description, 
         string memory image,
         uint256 campaignIndex
     ) public {
+        deployedContracts[campaignIndex].edit(
+            title,
+            description,
+            image,
+            msg.sender
+        );
+        
         titles[campaignIndex] = title;
         descriptions[campaignIndex] = description;
         images[campaignIndex] = image;

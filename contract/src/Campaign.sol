@@ -61,11 +61,14 @@ contract Campaign {
         return approvers[user]; 
     }
 
-    function editCampaign(
+    function edit(
         string memory _title, 
         string memory _description, 
-        string memory _image
+        string memory _image,
+        address sender
     ) public owner {
+        require(sender == manager);
+        
         title = _title;
         description = _description;
         image = _image;
