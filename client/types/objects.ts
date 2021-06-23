@@ -21,6 +21,7 @@ export interface CampaignSummary {
   description: string;
   image: string;
   manager: string;
+  index: number;
 }
 
 export interface Request {

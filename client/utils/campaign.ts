@@ -15,7 +15,8 @@ export const getCampaignData = async (
     title: payload[4],
     description: payload[5],
     image: payload[6],
-    manager: payload[7]
+    manager: payload[7],
+    index: parseInt(payload[8])
   };
 
   return new Promise((resolve) => resolve(summary));
@@ -125,24 +126,6 @@ export const createRequest = async (
     await campaign.methods.createRequest(description, recipient, value)?.send({
       from: user
     });
-
-    return new Promise((resolve) => resolve(false));
-  } catch (err) {
-    return new Promise((resolve) => resolve(err));
-  }
-};
-
-export const editCampaign = async (
-  { description, title, image },
-  account,
-  address
-): Promise<any> => {
-  const campaign = Campaign(address);
-
-  try {
-    await campaign.methods
-      .editCampaign(title, description, image)
-      ?.send({ from: account });
 
     return new Promise((resolve) => resolve(false));
   } catch (err) {

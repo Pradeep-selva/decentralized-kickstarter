@@ -39,18 +39,19 @@ export const createCampaign = async (
   }
 };
 
-export const updateMeta = async (
+export const updateCampaign = async (
   { description, image, title },
-  account,
+  account: string,
   index: number
 ): Promise<any> => {
   try {
     await Factory.methods
-      .updateFactoryMeta(title, description, image, index)
+      .updateCampaign(title, description, image, index)
       ?.send({ from: account });
 
     return new Promise((resolve) => resolve(false));
   } catch (err) {
+    console.log(err);
     return new Promise((resolve) => resolve(err));
   }
 };

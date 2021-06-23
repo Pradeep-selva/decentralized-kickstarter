@@ -17,7 +17,7 @@ import { useValidateCampaign } from "../../../validators";
 import { CampaignErrors, CampaignPayload } from "../../../types/validators";
 import { web3 } from "../../../instances";
 import RouteNames from "../../../config/routes";
-import { editCampaign, getCampaignData, updateMeta } from "../../../utils";
+import { getCampaignData, updateCampaign } from "../../../utils";
 import { CampaignSummary } from "../../../types";
 
 type IState = {
@@ -97,10 +97,11 @@ class EditCampaign extends Component<IProps, IState> {
       this.setState({ showStatus: true, errors: {} });
 
       const accounts = await web3.eth.getAccounts();
-      const cerr = await editCampaign(payload, accounts[0], this.props.address);
-      const ferr = await updateMeta(payload, accounts[0], 0);
-
-      const err = cerr ? cerr : ferr ? ferr : false;
+      const err = await updateCampaign(
+        payload,
+        accounts[0],
+        this.props.summary.index
+      );
 
       if (err) {
         this.setState({
@@ -159,7 +160,7 @@ class EditCampaign extends Component<IProps, IState> {
                     : "success"
                 }
                 error={failMessage}
-                success={"Your campaign was successfully created!"}
+                success={"Your campaign was successfully updated!"}
               />
             )}
             <Form onSubmit={() => this.setState({ showConfirm: true })}>
