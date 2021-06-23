@@ -56,6 +56,22 @@ contract Campaign {
         approvers[msg.sender] = true;
         approversCount++;
     }
+
+    function isContributor(address user) public view returns (bool) {
+        return approvers[user]; 
+    }
+
+    function editCampaign(
+        uint256 minimum, 
+        string memory _title, 
+        string memory _description, 
+        string memory _image
+    ) public owner {
+        minContribution = minimum;
+        title = _title;
+        description = _description;
+        image = _image;
+    }
     
     function createRequest(
         string memory desc,
@@ -71,7 +87,7 @@ contract Campaign {
         req.complete = false;
     }
     
-    function approveRequest(uint256 index) public isContributor {
+    function approveRequest(uint256 index) public contributor {
         Types.Request storage req = requests[index];
         
         require(!req.approvals[msg.sender]);
@@ -101,7 +117,7 @@ contract Campaign {
         _;
     }
     
-    modifier isContributor() {
+    modifier contributor() {
         require(approvers[msg.sender]);
         _;
     }

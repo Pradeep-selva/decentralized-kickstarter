@@ -42,4 +42,15 @@ contract Factory {
             images
         );
     }
+
+    function updateFactoryMeta(
+        string memory title, 
+        string memory description, 
+        string memory image,
+        uint256 campaignIndex
+    ) public {
+        titles[campaignIndex] = title;
+        descriptions[campaignIndex] = description;
+        images[campaignIndex] = image;
+    }
 }
