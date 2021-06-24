@@ -1,10 +1,11 @@
 import Web3 from "web3";
-import secrets from "../secrets";
 
 let web3: Web3;
 
 const initServerProvider = () => {
-  const provider = new Web3.providers.HttpProvider(secrets.infuraEndpoint);
+  const provider = new Web3.providers.HttpProvider(
+    process.env.REACT_APP_INFURA
+  );
   web3 = new Web3(provider);
 };
 
