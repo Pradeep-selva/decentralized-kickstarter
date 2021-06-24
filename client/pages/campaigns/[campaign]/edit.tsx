@@ -111,7 +111,9 @@ class EditCampaign extends Component<IProps, NewCampaignState> {
       setTimeout(() => {
         this.setState({ showStatus: false });
         !this.state.failMessage.length &&
-          this.props.router.push(RouteNames.home);
+          this.props.router.push(
+            RouteNames.campaignById.as(this.props.address)
+          );
       }, 5000);
     }
   };
@@ -214,9 +216,7 @@ class EditCampaign extends Component<IProps, NewCampaignState> {
             </Form>
           </Container>
           <Confirm
-            content={
-              "Are you sure you want to update this campaign? Please confirm both transactions after accepting."
-            }
+            content={"Are you sure you want to update this campaign?"}
             open={showConfirm}
             onCancel={this.closeDialog}
             onConfirm={() => {
