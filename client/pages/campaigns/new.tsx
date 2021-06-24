@@ -107,10 +107,7 @@ class NewCampaign extends Component<RouterProp, NewCampaignState> {
             name='description'
             content='Welcome to Decentralized KickStarter! Create a new campaign and get your dreams funded'
           />
-          <meta
-            property='og:site_name'
-            content='Decentralized KickStarter - new campaign'
-          />
+          <meta property='og:site_name' content='Decentralized KickStarter' />
           <meta
             property='og:description'
             content='Welcome to Decentralized KickStarter! Create a new campaign and get your dreams funded'

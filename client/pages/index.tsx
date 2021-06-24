@@ -25,10 +25,7 @@ class Home extends React.Component<HomeProps, {}> {
             name='description'
             content='A funding website for startups, like kickstarter, but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.'
           />
-          <meta
-            property='og:site_name'
-            content='Decentralized KickStarter - home page'
-          />
+          <meta property='og:site_name' content='Decentralized KickStarter' />
           <meta
             property='og:description'
             content='A funding website for startups, like kickstarter, but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.'

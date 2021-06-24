@@ -107,19 +107,16 @@ class Requests extends Component<RequestProps, ViewRequestsState> {
       <div>
         <Head>
           <title>D K: Requests {address}</title>
+          <meta property='og:site_name' content='Decentralized KickStarter' />
           <meta
             name='description'
             content={`View all requests of campaign ${address}`}
           />
           <meta
-            property='og:site_name'
-            content='Decentralized KickStarter - View Requests'
-          />
-          <meta
             property='og:description'
             content={`View all requests of campaign ${address}`}
           />
-          <meta property='og:title' content={address} />
+          <meta property='og:title' content='Edit Campaign' />
         </Head>
         <main className={homeStyles.main}>
           <Container>
@@ -164,7 +161,7 @@ class Requests extends Component<RequestProps, ViewRequestsState> {
                       : "success"
                   }
                   error={failMessage}
-                  success={"Your campaign was successfully created!"}
+                  success={"Request was successfully approved!"}
                 />
               )}
               {!!requests.length ? (

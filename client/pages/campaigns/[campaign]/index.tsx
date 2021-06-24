@@ -116,19 +116,10 @@ class ViewCampaign extends Component<CampaignDetailProps, ViewCampaignState> {
       <div>
         <Head>
           <title>D K: Campaign {address}</title>
-          <meta
-            name='description'
-            content={`View all details of campaign ${address}`}
-          />
-          <meta
-            property='og:site_name'
-            content='Decentralized KickStarter - Campaign Details'
-          />
-          <meta
-            property='og:description'
-            content={`View all details of campaign ${address}`}
-          />
-          <meta property='og:title' content={address} />
+          <meta name='description' content={description} />
+          <meta property='og:site_name' content={address} />
+          <meta property='og:title' content={title} />
+          <meta property='og:description' content={description} />
         </Head>
         <main className={homeStyles.main}>
           <Container fluid className={styles.centerContainer}>
