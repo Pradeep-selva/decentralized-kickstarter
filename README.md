@@ -2,6 +2,10 @@
 
 A funding website for startups, like [kickstarter](https://www.kickstarter.com/), but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.
 
+This is currently deployed on ethereum's Rinkeby Test Network.
+
+[Visit Site](https://decentralized-kickstarter.vercel.app/)
+
 ## Outline
 
 - Campaign managers create campaigns to raise money for their ideas.
@@ -26,7 +30,7 @@ A funding website for startups, like [kickstarter](https://www.kickstarter.com/)
 ## Steps to run locally
 
 - Run `yarn` or `npm i` in `client` and `contract`
-- Create a file called `secrets.ts` in root of `client` and `contract`, and fill it with -
+- Create a file called `secrets.ts` in root of `contract`, and fill it with -
 
 ```
 export default {
@@ -38,8 +42,15 @@ export default {
 };
 ```
 
+- Create a file called `.env` in root of `client` and fill it with -
+
+```
+REACT_APP_INFURA=YOUR-INFURA-ENDPOINT
+REACT_APP_DEPLOYED_ADDRESS=YOUR-DEPLOYED-CONTRACT-ADDRESS
+```
+
 - Navigate to `contract` and run `yarn compile`, then run `yarn deploy`.
-- Copy the address, from output and place it as `deployedAddress` in both `secrets.ts` files.
+- Copy the address, from output and place it as `deployedAddress` in `contract/secrets.ts` and in `REACT_APP_DEPLOYED_ADDRESS` of `client/.env`.
 - Navigate to client and run `yarn dev`.
 - Go to `localhost:3000`
 
