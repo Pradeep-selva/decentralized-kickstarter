@@ -42,12 +42,6 @@ export default {
 };
 ```
 
-- Create a file called `.env` in root of `client` and fill it with -
-
-```
-REACT_APP_INFURA=YOUR-INFURA-ENDPOINT
-```
-
 - Navigate to `contract` and run `yarn compile & yarn deploy`.
 - Copy the address, from output and place it in `FACTORY_ADDRESS` of `client/instances/factory.ts`.
 - Navigate to client and run `yarn dev`.
