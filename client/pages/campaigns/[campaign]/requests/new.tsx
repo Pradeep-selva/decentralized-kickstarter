@@ -152,7 +152,7 @@ class NewRequest extends Component<IProps, NewRequestState> {
                     : "success"
                 }
                 error={failMessage}
-                success={"Your campaign was successfully created!"}
+                success={"Your request was successfully created!"}
               />
             )}
             <Form onSubmit={() => this.setState({ showConfirm: true })}>
