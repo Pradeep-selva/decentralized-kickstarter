@@ -114,8 +114,17 @@ class NewRequest extends Component<IProps, NewRequestState> {
           <title>D K: New Request for {address}</title>
           <meta
             name='description'
-            content={`Decentralized KickStarter - New request for campaign ${address}`}
+            content={`Create a new request for campaign ${address}`}
           />
+          <meta
+            property='og:site_name'
+            content='Decentralized KickStarter - Create Request'
+          />
+          <meta
+            property='og:description'
+            content={`Create a new request for campaign ${address}`}
+          />
+          <meta property='og:title' content={address} />
         </Head>
         <main className={homeStyles.main}>
           <Container>

@@ -109,8 +109,17 @@ class Requests extends Component<RequestProps, ViewRequestsState> {
           <title>D K: Requests {address}</title>
           <meta
             name='description'
-            content={`Decentralized KickStarter - requests of campaign ${address}`}
+            content={`View all requests of campaign ${address}`}
           />
+          <meta
+            property='og:site_name'
+            content='Decentralized KickStarter - View Requests'
+          />
+          <meta
+            property='og:description'
+            content={`View all requests of campaign ${address}`}
+          />
+          <meta property='og:title' content={address} />
         </Head>
         <main className={homeStyles.main}>
           <Container>

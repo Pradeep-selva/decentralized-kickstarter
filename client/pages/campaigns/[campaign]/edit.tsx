@@ -131,8 +131,17 @@ class EditCampaign extends Component<IProps, NewCampaignState> {
           <title>DK: Edit Campaign</title>
           <meta
             name='description'
-            content={`Decentralized KickStarter - edit campaign ${address}`}
+            content={`Edit the updatable fields of campaign ${address}`}
           />
+          <meta
+            property='og:site_name'
+            content='Decentralized KickStarter - Campaign Edit'
+          />
+          <meta
+            property='og:description'
+            content={`Edit the updatable fields of campaign ${address}`}
+          />
+          <meta property='og:title' content={address} />
         </Head>
         <main className={homeStyles.main}>
           <Container>
