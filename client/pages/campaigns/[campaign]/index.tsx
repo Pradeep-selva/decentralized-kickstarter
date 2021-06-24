@@ -174,7 +174,7 @@ class ViewCampaign extends Component<CampaignDetailProps, ViewCampaignState> {
               <h2>Campaign attributes</h2>
             </div>
             <Container>
-              <div style={{ marginTop: "4vh" }}>{this.renderCards()}</div>
+              <div style={{ margin: "4vh" }}>{this.renderCards()}</div>
             </Container>
           </Container>
         </main>
