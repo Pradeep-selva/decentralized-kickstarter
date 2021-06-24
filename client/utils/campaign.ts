@@ -1,4 +1,4 @@
-import { Campaign, web3 } from "../instances";
+import { Campaign } from "../instances";
 import { CampaignSummary, ProcessedRequest, Request } from "../types";
 
 export const getCampaignData = async (
