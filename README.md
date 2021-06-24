@@ -1,10 +1,11 @@
-# Decentralized KickStarter
+<h1 align="center">Decentralized KickStarter</h1>
+<div align="center">
+  <p>A funding website for startups, like <a href="https://www.kickstarter.com/">kickstarter</a>, but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.</p>
+  <p>This is currently deployed on ethereum's Rinkeby Test Network.</p>
+  <p><a href="https://decentralized-kickstarter.vercel.app/">Visit Site</a></p>
+</div>
 
-A funding website for startups, like [kickstarter](https://www.kickstarter.com/), but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.
-
-This is currently deployed on ethereum's Rinkeby Test Network.
-
-[Visit Site](https://decentralized-kickstarter.vercel.app/)
+![screenshot](https://i.ibb.co/NWcwVMg/image.png)
 
 ## Outline
 
@@ -38,7 +39,6 @@ export default {
     "YOUR-MNEMONIC",
   infuraEndpoint:
     "YOUR-INFURA-ENDPOINT",
-  deployedAddress: "YOUR-DEPLOYED-CONTRACT-ADDRESS"
 };
 ```
 
@@ -46,11 +46,10 @@ export default {
 
 ```
 REACT_APP_INFURA=YOUR-INFURA-ENDPOINT
-REACT_APP_DEPLOYED_ADDRESS=YOUR-DEPLOYED-CONTRACT-ADDRESS
 ```
 
-- Navigate to `contract` and run `yarn compile`, then run `yarn deploy`.
-- Copy the address, from output and place it as `deployedAddress` in `contract/secrets.ts` and in `REACT_APP_DEPLOYED_ADDRESS` of `client/.env`.
+- Navigate to `contract` and run `yarn compile & yarn deploy`.
+- Copy the address, from output and place it in `FACTORY_ADDRESS` of `client/instances/factory.ts`.
 - Navigate to client and run `yarn dev`.
 - Go to `localhost:3000`
 
