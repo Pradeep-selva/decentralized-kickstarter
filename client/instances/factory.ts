@@ -1,8 +1,8 @@
 import web3 from "./web3";
 import Factory from "../contract_build/Factory.json";
-
-const FACTORY_ADDRESS = "0x7bB08511dE45b13C08DAF8EFa4C0Ba20c4eAa2CC";
+import { FACTORY_ADDRESS } from "../config";
 
 const instance = new web3.eth.Contract(Factory.abi as any, FACTORY_ADDRESS);
 
 export default instance;
+// 0x7bb08511de45b13c08daf8efa4c0ba20c4eaa2cc;
