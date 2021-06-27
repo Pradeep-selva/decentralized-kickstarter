@@ -2,11 +2,13 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-import { Button, Card, Grid } from "semantic-ui-react";
+import pageStyles from "../styles/Pages.module.css";
+import { Button, Card, Grid, Icon } from "semantic-ui-react";
 import { CampaignCard } from "../components";
 import RouteNames from "../config/routes";
-import { getAllCampaigns } from "../utils";
+import { filterCampaigns, getAllCampaigns } from "../utils";
 import { HomeProps } from "../types";
+import Context from "../context/context";
 
 class Home extends React.Component<HomeProps, {}> {
   static async getInitialProps() {
@@ -18,53 +20,79 @@ class Home extends React.Component<HomeProps, {}> {
     const { error, campaigns } = this.props;
 
     return (
-      <div>
-        <Head>
-          <title>Decentralized KickStarter</title>
-          <meta
-            name='description'
-            content='A funding website for startups, like kickstarter, but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.'
-          />
-          <meta property='og:site_name' content='Decentralized KickStarter' />
-          <meta
-            property='og:description'
-            content='A funding website for startups, like kickstarter, but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.'
-          />
-          <meta property='og:title' content='Home' />
-        </Head>
+      <Context.Consumer>
+        {(context) => (
+          <div>
+            <Head>
+              <title>Decentralized KickStarter</title>
+              <meta
+                name='description'
+                content='A funding website for startups, like kickstarter, but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.'
+              />
+              <meta
+                property='og:site_name'
+                content='Decentralized KickStarter'
+              />
+              <meta
+                property='og:description'
+                content='A funding website for startups, like kickstarter, but built decentralized with ethereum based on a contribute-approve model, where contributors of a campaign must approve transaction requests of campaign managers, to reduce scams.'
+              />
+              <meta property='og:title' content='Home' />
+            </Head>
 
-        <main className={styles.main}>
-          <Grid columns={2} centered divided>
-            <Grid.Row>
-              <Grid.Column computer={"2"} mobile={"12"} textAlign={"center"}>
-                <div style={{ marginBottom: "4vh" }}>
-                  <h2>Want to get your dreams funded?</h2>
-                  <Button size={"huge"} color={"blue"}>
-                    <Link href={RouteNames.newCampaign}>Create Campaign</Link>
-                  </Button>
-                </div>
-              </Grid.Column>
-              <Grid.Column computer={"10"} mobile={"12"}>
-                {!error && !!campaigns.length && (
-                  <Card.Group>
-                    {campaigns.map(
-                      ({ address, title, description, image }, index) => (
-                        <CampaignCard
-                          address={address}
-                          title={title}
-                          description={description}
-                          image={image}
-                          key={index}
-                        />
-                      )
+            <main className={styles.main}>
+              <Grid columns={2} centered divided>
+                <Grid.Row>
+                  <Grid.Column
+                    computer={"2"}
+                    mobile={"12"}
+                    textAlign={"center"}
+                  >
+                    <div style={{ marginBottom: "4vh" }}>
+                      <h2>Want to get your dreams funded?</h2>
+                      <Button size={"huge"} color={"blue"}>
+                        <Link href={RouteNames.newCampaign}>
+                          Create Campaign
+                        </Link>
+                      </Button>
+                    </div>
+                  </Grid.Column>
+                  <Grid.Column computer={"10"} mobile={"12"}>
+                    {!error &&
+                    !!filterCampaigns(context.searchKey, campaigns).length ? (
+                      <Card.Group>
+                        {filterCampaigns(context.searchKey, campaigns).map(
+                          ({ address, title, description, image }, index) => (
+                            <CampaignCard
+                              address={address}
+                              title={title}
+                              description={description}
+                              image={image}
+                              key={index}
+                            />
+                          )
+                        )}
+                      </Card.Group>
+                    ) : (
+                      <div
+                        className={pageStyles.centerContainer}
+                        style={{ marginTop: "25vh" }}
+                      >
+                        <Icon name={"folder open outline"} size={"massive"} />
+                        <h2>
+                          {!!context.searchKey
+                            ? `"${context.searchKey}" not found!`
+                            : "No campaigns have been created."}
+                        </h2>
+                      </div>
                     )}
-                  </Card.Group>
-                )}
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </main>
-      </div>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </main>
+          </div>
+        )}
+      </Context.Consumer>
     );
   }
 }

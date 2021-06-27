@@ -5,7 +5,7 @@
   <p><a href="https://decentralized-kickstarter.vercel.app/">Visit Site</a></p>
 </div>
 
-![screenshot](https://i.ibb.co/NWcwVMg/image.png)
+![screenshot](https://i.ibb.co/R9wKXNf/image.png)
 
 ## Outline
 

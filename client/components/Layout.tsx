@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import styles from "../styles/Components.module.css";
 import { Button, Menu, Icon } from "semantic-ui-react";
+import SearchBar from "./SearchBar";
 import routes from "../config/routes";
 
 const Layout = ({ children }) => {
@@ -12,6 +13,9 @@ const Layout = ({ children }) => {
           <Link href={routes.home}>
             <h1>Decentralized Kickstarter</h1>
           </Link>
+        </Menu.Item>
+        <Menu.Item position={"left"} className={styles.menuAdd}>
+          <SearchBar />
         </Menu.Item>
         <Menu.Item position={"right"} className={styles.menuAdd}>
           <Button icon color={"green"} labelPosition={"right"}>
