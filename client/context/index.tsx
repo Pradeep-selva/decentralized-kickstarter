@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ProviderState } from "../types";
+import { debounce } from "../utils";
 import Context from "./context";
 
 class ContextProvider extends Component<{}, ProviderState> {
@@ -11,10 +12,13 @@ class ContextProvider extends Component<{}, ProviderState> {
     };
   }
 
-  onSearch = (event: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState(() => ({
-      searchKey: event.target.value
-    }));
+  onSearch = debounce(
+    (searchKey) =>
+      this.setState(() => ({
+        searchKey
+      })),
+    300
+  );
 
   render() {
     const {

@@ -1,6 +1,6 @@
 export interface ContextType {
   searchKey: string;
-  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch: (searchKey: string) => void;
 }
 
 export interface ProviderState {
