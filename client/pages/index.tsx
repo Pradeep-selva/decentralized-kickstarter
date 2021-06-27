@@ -2,7 +2,8 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-import { Button, Card, Grid } from "semantic-ui-react";
+import pageStyles from "../styles/Pages.module.css";
+import { Button, Card, Grid, Icon } from "semantic-ui-react";
 import { CampaignCard } from "../components";
 import RouteNames from "../config/routes";
 import { filterCampaigns, getAllCampaigns } from "../utils";
@@ -57,7 +58,8 @@ class Home extends React.Component<HomeProps, {}> {
                     </div>
                   </Grid.Column>
                   <Grid.Column computer={"10"} mobile={"12"}>
-                    {!error && !!campaigns.length && (
+                    {!error &&
+                    !!filterCampaigns(context.searchKey, campaigns).length ? (
                       <Card.Group>
                         {filterCampaigns(context.searchKey, campaigns).map(
                           ({ address, title, description, image }, index) => (
@@ -71,6 +73,18 @@ class Home extends React.Component<HomeProps, {}> {
                           )
                         )}
                       </Card.Group>
+                    ) : (
+                      <div
+                        className={pageStyles.centerContainer}
+                        style={{ marginTop: "25vh" }}
+                      >
+                        <Icon name={"folder open outline"} size={"massive"} />
+                        <h2>
+                          {!!context.searchKey
+                            ? `"${context.searchKey}" not found!`
+                            : "No campaigns have been created."}
+                        </h2>
+                      </div>
                     )}
                   </Grid.Column>
                 </Grid.Row>
