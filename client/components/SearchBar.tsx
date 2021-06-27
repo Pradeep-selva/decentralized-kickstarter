@@ -1,17 +1,18 @@
 import React from "react";
 import { Icon, Input } from "semantic-ui-react";
+import Context from "../context/context";
 
 const SearchBar = () => {
-  const [searchKey, setSearchKey] = React.useState("");
+  const context = React.useContext(Context);
 
   return (
     <Input
       icon={<Icon name='search' />}
       iconPosition={"left"}
       placeholder={"Search for a campaign..."}
-      value={searchKey}
+      value={context.searchKey}
       name={"searchKey"}
-      onChange={({ target: { value } }) => setSearchKey(value)}
+      onChange={context.onSearch}
       style={{ width: "20vw" }}
     />
   );
