@@ -5,15 +5,15 @@ import "./Types.sol";
 
 contract Campaign {
     address manager;
-    uint256 minContribution;
     string description;
     string title;
     string image;
-    mapping(uint256 => Types.Request) public requests;
+    uint256 minContribution;
     uint256 numRequests;
-    mapping(address => bool) approvers;
     uint256 public approversCount;
     uint256 cindex;
+    mapping(uint256 => Types.Request) public requests;
+    mapping(address => bool) approvers;
     
     constructor(
         uint256 minimum, 
