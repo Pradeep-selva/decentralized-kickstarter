@@ -96,7 +96,7 @@ contract Campaign {
     function approveRequest(uint256 index) public contributor {
         Types.Request storage req = requests[index];
         
-        require(!req.approvals[msg.sender]);
+        require(!req.approvals[msg.sender], "You have already approved this request");
         
         req.approvals[msg.sender] = true;
         req.approvalCount++;
@@ -105,26 +105,29 @@ contract Campaign {
     function finalizeRequest(uint256 index) public owner {
         Types.Request storage req = requests[index];
         
-        require(req.approvalCount >= approversCount/2);
-        require(!req.complete);
+        require(
+            req.approvalCount >= approversCount/2, 
+            "You dont have enough approvals to finalize this request"
+        );
+        require(!req.complete,"This campaign is already completed");
         
         req.recipient.transfer(req.value);
         req.complete = true;
     }
     
     modifier owner() {
-        require(msg.sender == manager);
+        require(msg.sender == manager, "Only the campaign manager can call this function");
         _;
     }
     
     modifier newContributor() {
-        require(msg.value >= minContribution);
-        require(!approvers[msg.sender]);
+        require(msg.value >= minContribution, "Please contribute the minimum ether to join this campaign");
+        require(!approvers[msg.sender], "You are already a contributor");
         _;
     }
     
     modifier contributor() {
-        require(approvers[msg.sender]);
+        require(approvers[msg.sender], "Only contributors of this campaign cal call this function");
         _;
     }
 }
